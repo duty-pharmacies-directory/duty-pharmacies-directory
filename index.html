@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل الصيدليات المناوبة - لوحة تحكم لإدارة الجدول</title>
+    <title>دليل الصيدليات المناوبة - لوحة تحكم لإدارة الجدول والتحليلات</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -104,22 +104,41 @@
                 </button>
 
                 <div class="bg-white/10 p-2.5 rounded-2xl backdrop-blur-md shadow-inner border border-white/20 hidden sm:block">
-                    <i class="fa-solid fa-kit-medical text-2xl text-emerald-200"></i>
+                    <i class="fa-solid fa-camera text-2xl text-emerald-200"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2">
-                        دليل الصيدليات المناوبة
-                    </h1>
+                    <!-- إضافة الاسم والصفحة أعلى عنوان الصيدليات -->
+                    <a href="https://www.facebook.com/abdulhamid.dib.photograph" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:text-amber-200 transition-colors mb-0.5">
+                        <i class="fa-brands fa-facebook text-sky-400"></i>
+                        <span>صفحة عدسة وادي الشاطر (عبدالحميد ديب)</span>
+                    </a>
+                    
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight">
+                            دليل الصيدليات المناوبة
+                        </h1>
+                        <div id="admin-status-pill" class="hidden shrink-0 bg-amber-500 text-slate-900 text-[10px] sm:text-xs font-black px-2.5 py-1 rounded-xl shadow flex items-center gap-1">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <span>مسؤول</span>
+                        </div>
+                    </div>
                     <p class="text-xs text-emerald-100 opacity-90">رأس الشغري - الرادار - وادي الشاطر</p>
                 </div>
             </div>
             
             <!-- Quick Tools & Metrics -->
             <div class="flex flex-wrap items-center gap-2.5">
+                <!-- زر مشاركة رابط الموقع عبر الواتساب (جديد) -->
+                <button id="share-website-whatsapp-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all flex items-center gap-2 border border-emerald-400 focus:ring-2 focus:ring-emerald-300">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span class="hidden md:inline">مشاركة الموقع عبر الواتساب</span>
+                    <span class="md:hidden">مشاركة الموقع</span>
+                </button>
+
                 <button id="open-fb-modal-btn" class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all flex items-center gap-2 border border-slate-200">
                     <i class="fa-brands fa-facebook-f text-blue-600 text-base"></i>
                     <span class="hidden md:inline">استخراج صورة للنشر</span>
-                    <span class="md:hidden">صورة نشر</span>
+                    <span class="md:hidden">صورة الفيس بوك</span>
                 </button>
 
                 <button id="toggle-dark-btn" title="تبديل المظهر" class="bg-white/10 hover:bg-white/20 p-2 rounded-xl backdrop-blur-md border border-white/20 transition-all text-emerald-100 hover:text-white">
@@ -135,25 +154,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-6 w-full flex-grow">
-        
-        <!-- Welcome Alert Banner -->
-        <div class="bg-emerald-50 dark:bg-emerald-950/40 border-r-4 border-emerald-500 p-4 rounded-2xl shadow-sm mb-6 flex items-start justify-between gap-3 border border-emerald-100 dark:border-emerald-800">
-            <div class="flex items-start gap-3">
-                <div class="text-emerald-600 dark:text-emerald-400 text-2xl mt-0.5">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-emerald-900 dark:text-emerald-200">الجدول الرسمي المحدث للصيدليات المناوبة</h3>
-                    <p class="text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 mt-0.5">
-                        يتم عرض المناوبات اليومية بدقة وفق الجداول المعتمدة والتحويل التلقائي اليومي مع تزامن متجدد عبر Firebase.
-                    </p>
-                </div>
-            </div>
-            <div id="admin-status-pill" class="hidden shrink-0 bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-user-shield"></i>
-                <span>وضع المسؤول نشط</span>
-            </div>
-        </div>
 
         <!-- Filter & Date Selection Bar -->
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 mb-6 flex flex-col lg:flex-row gap-5 justify-between items-stretch lg:items-center">
@@ -167,6 +167,12 @@
                 
                 <button id="set-today-btn" class="text-xs bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 px-3.5 py-2.5 rounded-xl font-bold hover:bg-emerald-200 dark:hover:bg-emerald-800 transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-crosshairs"></i> اليوم
+                </button>
+
+                <button id="active-shift-btn" class="shrink-0 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-emerald-500 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-emerald-600 dark:text-emerald-400"></i>
+                    <span>المناوبة حالياً فقط</span>
+                    <span id="active-badge-status" class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
                 </button>
             </div>
 
@@ -187,25 +193,6 @@
                 </button>
             </div>
 
-        </div>
-
-        <!-- Search Bar and Status Toggle -->
-        <div class="mb-8 flex flex-col md:flex-row gap-4 items-center">
-            <div class="relative flex-grow w-full">
-                <span class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" id="search-input" placeholder="ابحث باسم الصيدلية، الشارع، أو معلم قريب..." class="w-full pl-10 pr-11 py-3.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800 dark:text-slate-100 transition-all">
-                <button id="clear-search-btn" class="hidden absolute inset-y-0 left-0 px-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <button id="active-shift-btn" class="w-full md:w-auto shrink-0 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-3.5 rounded-2xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-emerald-500 transition-all flex items-center justify-center gap-2">
-                <i class="fa-solid fa-clock text-emerald-600 dark:text-emerald-400"></i>
-                <span>المناوبة حالياً فقط</span>
-                <span id="active-badge-status" class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
-            </button>
         </div>
 
         <!-- Active Date Banner Title -->
@@ -231,10 +218,10 @@
             </div>
             <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200">لا توجد صيدليات مناوبة مطابقة لخيارات التصفية</h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">
-                جرب اختيار تاريخ آخر، مسح عبارة البحث، أو إيقاف خيار "المناوبة حالياً".
+                جرب اختيار تاريخ آخر أو إيقاف خيار "المناوبة حالياً".
             </p>
             <button id="reset-filters-btn" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all">
-                إعادة ضبط جميع الفلاتر
+                إعادة ضبط الفلاتر
             </button>
         </div>
 
@@ -252,7 +239,7 @@
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <h3 class="text-xl font-black text-slate-900 dark:text-slate-100">دخول لوحة التحكم الإدارية</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">أدخل كلمة السر الخاصة للوصول وإدارة الصيدليات</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">أدخل كلمة السر الخاصة للوصول وإدارة الصيدليات والتحليلات</p>
             </div>
 
             <form id="auth-form" class="space-y-4">
@@ -290,7 +277,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-slate-100">لوحة التحكم وإدارة البيانات</h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">تعديل الصيدليات، العناوين، الخرائط، وأيام العرض للعموم</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">تعديل الصيدليات، العناوين، الخرائط، والتحليلات والإحصائيات</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -307,6 +294,9 @@
                 </button>
                 <button id="tab-btn-directory" class="admin-tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 shrink-0 flex items-center gap-2">
                     <i class="fa-solid fa-boxes-stacked"></i> دليل الصيدليات والمواقع
+                </button>
+                <button id="tab-btn-analytics" class="admin-tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-emerald-500"></i> الإحصائيات والتحليلات
                 </button>
                 <button id="tab-btn-settings" class="admin-tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 shrink-0 flex items-center gap-2">
                     <i class="fa-solid fa-gear"></i> إعدادات كلمة السر والنظام
@@ -420,7 +410,70 @@
                     </div>
                 </div>
 
-                <!-- TAB 3: SETTINGS & SECURITY -->
+                <!-- TAB 3: ANALYTICS & STATS -->
+                <div id="tab-analytics" class="space-y-6 hidden">
+                    <div class="bg-gradient-to-r from-emerald-900/10 via-teal-900/10 to-slate-900/10 p-5 rounded-2xl border border-emerald-500/20">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h4 class="text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                                    <i class="fa-solid fa-chart-pie text-emerald-600 dark:text-emerald-400"></i>
+                                    إحصائيات واستخدام الموقع
+                                </h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    بيانات مباشرة ومحدثة فورياً عن تفاعل الزوار مع خدمات الموقع المختلفة.
+                                </p>
+                            </div>
+                            <button id="reset-analytics-btn" class="text-xs bg-rose-100 hover:bg-rose-200 text-rose-700 dark:bg-rose-950/60 dark:hover:bg-rose-900 dark:text-rose-300 font-bold px-3 py-2 rounded-xl border border-rose-200 dark:border-rose-800 transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-rotate-left"></i> تصفير الإحصائيات
+                            </button>
+                        </div>
+
+                        <!-- Stat Cards Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400">عدد زيارات الموقع</div>
+                                    <div id="stat-page-views" class="text-2xl font-black text-slate-900 dark:text-slate-100 mt-0.5">0</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                                <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-file-image"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400">استخراج صور الفيسبوك</div>
+                                    <div id="stat-image-exports" class="text-2xl font-black text-slate-900 dark:text-slate-100 mt-0.5">0</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                                <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400">مشاركة عبر الواتساب</div>
+                                    <div id="stat-whatsapp-shares" class="text-2xl font-black text-slate-900 dark:text-slate-100 mt-0.5">0</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                                <div class="w-12 h-12 bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400">استخدام خرائط جوجل</div>
+                                    <div id="stat-map-clicks" class="text-2xl font-black text-slate-900 dark:text-slate-100 mt-0.5">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: SETTINGS & SECURITY -->
                 <div id="tab-settings" class="space-y-6 hidden">
                     <div class="bg-slate-50 dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
                         <h4 class="text-sm font-black text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
@@ -456,7 +509,7 @@
                             استعادة البيانات الافتراضية للجدول
                         </h4>
                         <p class="text-xs text-rose-700 dark:text-rose-300 mb-4">
-                            في حال قيامك بإجراء تغييرات خاطئة وتريد العودة إلى الجدول الأساسي الافتراضي لكامل أسبوعي شهر أيلول، يمكنك الضغط هنا.
+                            في حال قيامك بإجراء تغييرات خاطئة وتريد العودة إلى الجدول الأساسي الافتراضي، يمكنك الضغط هنا.
                         </p>
                         <button id="reset-defaults-btn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all flex items-center gap-2 shadow-sm">
                             <i class="fa-solid fa-rotate-left"></i> استعادة البيانات الافتراضية
@@ -500,39 +553,41 @@
             </div>
 
             <div class="flex-grow flex items-center justify-center overflow-auto p-2 bg-slate-100 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800">
-                
                 <div class="fb-preview-wrapper" id="fb-wrapper">
-                    <div id="facebook-export-card" class="bg-slate-900 text-white p-12 flex flex-col justify-between">
+                    <div id="facebook-export-card" class="bg-slate-900 text-white p-10 flex flex-col justify-between transition-colors duration-300">
                         <div>
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-6 mb-6">
-                                <div class="flex items-center gap-4">
-                                    <div class="bg-emerald-500 p-4 rounded-2xl text-slate-950 text-3xl font-black">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-5 mb-5">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="bg-emerald-500 p-3.5 rounded-2xl text-slate-950 text-2xl font-black">
                                         <i class="fa-solid fa-kit-medical"></i>
                                     </div>
                                     <div>
-                                        <h2 class="text-3xl font-black text-white">موقع دليل الصيدليات المناوبة</h2>
-                                        <p class="text-sm text-slate-400 font-semibold mt-1">رأس الشغري - الرادار - وادي الشاطر</p>
+                                        <h2 class="text-2xl font-black text-white">موقع دليل الصيدليات المناوبة</h2>
+                                        <p class="text-xs text-slate-400 font-semibold mt-0.5">رأس الشغري - الرادار - وادي الشاطر</p>
                                     </div>
                                 </div>
-                                <div class="text-left bg-slate-800/80 border border-slate-700/60 px-5 py-3 rounded-2xl">
-                                    <div id="fb-card-day-title" class="text-emerald-400 text-xl font-black">--</div>
-                                    <div id="fb-card-date-title" class="text-slate-300 text-sm font-bold font-mono mt-0.5">----/--/--</div>
+                                <div class="text-left bg-slate-800/80 border border-slate-700/60 px-4 py-2.5 rounded-2xl">
+                                    <div id="fb-card-day-title" class="text-emerald-400 text-lg font-black">--</div>
+                                    <div id="fb-card-date-title" class="text-slate-300 text-xs font-bold font-mono mt-0.5">----/--/--</div>
                                 </div>
                             </div>
 
-                            <div id="fb-pharmacies-list" class="space-y-5"></div>
+                            <div id="fb-pharmacies-list"></div>
                         </div>
 
-                        <div class="pt-6 border-t border-slate-800 flex justify-center items-center text-sm">
-                            <div class="flex items-center gap-2 text-emerald-400 font-bold text-base">
+                        <div class="pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+                            <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
                                 <i class="fa-solid fa-location-dot"></i>
                                 <span>جدول الصيدليات المناوبة الرسمية</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 font-bold text-sky-400">
+                                <i class="fa-brands fa-facebook"></i>
+                                <span>عدسة وادي الشاطر (عبدالحميد ديب)</span>
                             </div>
                         </div>
 
                     </div>
                 </div>
-
             </div>
 
             <div class="flex items-center justify-between gap-4 mt-5 pt-3 border-t border-slate-200 dark:border-slate-800">
@@ -548,7 +603,7 @@
         </div>
     </div>
 
-    <!-- Custom Confirmation Modal for dangerous actions -->
+    <!-- Confirmation Modal -->
     <div id="confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-center">
             <div class="w-14 h-14 bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 rounded-2xl flex items-center justify-center mx-auto text-2xl mb-3">
@@ -603,6 +658,7 @@
         const scheduleRef = ref(db, 'scheduleData');
         const masterRef = ref(db, 'masterPharmacies');
         const settingsRef = ref(db, 'settings');
+        const analyticsRef = ref(db, 'analytics');
 
         // Helper to get today formatted date
         function getTodayFormattedDate() {
@@ -784,14 +840,19 @@
         let adminPassword = '135792468';
         let visibleDaysLimit = 14;
 
+        let analyticsData = {
+            pageViews: 0,
+            imageExports: 0,
+            whatsappShares: 0,
+            mapClicks: 0
+        };
+
         let selectedDate = getTodayFormattedDate();
         let selectedRegion = "all";
-        let searchQuery = "";
         let filterActiveShiftOnly = false;
         let favoritePharmacies = JSON.parse(localStorage.getItem('fav_pharmacies') || '[]');
         let currentCardTheme = 'dark';
         let isAdminLoggedIn = false;
-        let lastCheckedDate = getTodayFormattedDate();
 
         // Sync Realtime Data from Firebase
         onValue(scheduleRef, (snapshot) => {
@@ -831,6 +892,44 @@
                 set(settingsRef, { adminPassword, visibleDaysLimit });
             }
         });
+
+        // Sync Analytics from Firebase
+        onValue(analyticsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                analyticsData = {
+                    pageViews: data.pageViews || 0,
+                    imageExports: data.imageExports || 0,
+                    whatsappShares: data.whatsappShares || 0,
+                    mapClicks: data.mapClicks || 0
+                };
+            } else {
+                set(analyticsRef, analyticsData);
+            }
+            updateAnalyticsUI();
+        });
+
+        function incrementAnalytic(metricKey) {
+            analyticsData[metricKey] = (analyticsData[metricKey] || 0) + 1;
+            set(analyticsRef, analyticsData);
+        }
+
+        if (!sessionStorage.getItem('pharmacy_visited_session')) {
+            sessionStorage.setItem('pharmacy_visited_session', 'true');
+            incrementAnalytic('pageViews');
+        }
+
+        function updateAnalyticsUI() {
+            const viewsEl = document.getElementById('stat-page-views');
+            const exportsEl = document.getElementById('stat-image-exports');
+            const sharesEl = document.getElementById('stat-whatsapp-shares');
+            const mapsEl = document.getElementById('stat-map-clicks');
+
+            if (viewsEl) viewsEl.textContent = analyticsData.pageViews.toLocaleString('ar-EG');
+            if (exportsEl) exportsEl.textContent = analyticsData.imageExports.toLocaleString('ar-EG');
+            if (sharesEl) sharesEl.textContent = analyticsData.whatsappShares.toLocaleString('ar-EG');
+            if (mapsEl) mapsEl.textContent = analyticsData.mapClicks.toLocaleString('ar-EG');
+        }
 
         // Save State Helpers to Firebase
         function saveScheduleState() {
@@ -925,6 +1024,7 @@
             document.getElementById('visible-days-count-select').value = visibleDaysLimit;
             renderAdminScheduleTab();
             renderAdminDirectoryTab();
+            updateAnalyticsUI();
         }
 
         function closeAdminModal() {
@@ -938,6 +1038,7 @@
 
             document.getElementById('tab-schedule').classList.add('hidden');
             document.getElementById('tab-directory').classList.add('hidden');
+            document.getElementById('tab-analytics').classList.add('hidden');
             document.getElementById('tab-settings').classList.add('hidden');
 
             document.getElementById(tabId).classList.remove('hidden');
@@ -945,6 +1046,7 @@
             const activeBtnMap = {
                 'tab-schedule': 'tab-btn-schedule',
                 'tab-directory': 'tab-btn-directory',
+                'tab-analytics': 'tab-btn-analytics',
                 'tab-settings': 'tab-btn-settings'
             };
 
@@ -1007,18 +1109,6 @@
             renderPharmacies();
         }
 
-        function handleSearch() {
-            const input = document.getElementById('search-input');
-            searchQuery = input.value.trim().toLowerCase();
-            const clearBtn = document.getElementById('clear-search-btn');
-            if (searchQuery.length > 0) {
-                clearBtn.classList.remove('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-            }
-            renderPharmacies();
-        }
-
         function isShiftCurrentlyActive(shiftPeriodText, fullShiftText) {
             const now = new Date();
             const currentHour = now.getHours();
@@ -1058,14 +1148,10 @@
 
             const filtered = currentPharmacies.filter(pharmacy => {
                 const matchesRegion = selectedRegion === 'all' || pharmacy.region === selectedRegion;
-                const matchesSearch = pharmacy.name.toLowerCase().includes(searchQuery) ||
-                                      pharmacy.address.toLowerCase().includes(searchQuery) ||
-                                      pharmacy.region.toLowerCase().includes(searchQuery);
-                
                 const isActiveNow = isShiftCurrentlyActive(pharmacy.shiftPeriod, dateObj.shiftTime);
                 const matchesActiveShift = !filterActiveShiftOnly || isActiveNow;
 
-                return matchesRegion && matchesSearch && matchesActiveShift;
+                return matchesRegion && matchesActiveShift;
             });
 
             totalCountBadge.textContent = `${filtered.length} صيدلية`;
@@ -1077,16 +1163,17 @@
             }
 
             emptyState.classList.add('hidden');
+
             grid.innerHTML = filtered.map(pharmacy => {
                 const isFav = favoritePharmacies.includes(pharmacy.name);
                 const shiftPeriodText = pharmacy.shiftPeriod ? pharmacy.shiftPeriod : dateObj.shiftTime;
                 const isActiveNow = isShiftCurrentlyActive(pharmacy.shiftPeriod, dateObj.shiftTime);
 
                 return `
-                <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700/80 hover:shadow-lg transition-all flex flex-col justify-between group relative overflow-hidden">
+                <div class="bg-emerald-50/70 dark:bg-emerald-950/40 border-r-4 border-emerald-500 border border-emerald-200/80 dark:border-emerald-800/80 rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group relative overflow-hidden">
                     
                     ${isActiveNow ? `
-                        <div class="absolute top-0 right-0 left-0 bg-emerald-500 text-white text-[10px] font-bold py-1 px-4 text-center tracking-wide flex items-center justify-center gap-1.5">
+                        <div class="absolute top-0 right-0 left-0 bg-emerald-600 text-white text-[10px] font-bold py-1 px-4 text-center tracking-wide flex items-center justify-center gap-1.5 shadow-sm">
                             <span class="w-2 h-2 rounded-full bg-white pulse-badge"></span>
                             مناوبة الآن (مفتوح للتواصـل)
                         </div>
@@ -1094,8 +1181,8 @@
 
                     <div class="${isActiveNow ? 'pt-3' : ''}">
                         <div class="flex justify-between items-start gap-2 mb-3">
-                            <span class="px-3 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold rounded-full border border-emerald-100 dark:border-emerald-800 flex items-center gap-1">
-                                <i class="fa-solid fa-location-dot"></i> ${pharmacy.region}
+                            <span class="px-3 py-1 bg-white/80 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 text-xs font-bold rounded-full border border-emerald-200 dark:border-emerald-700 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot text-emerald-600 dark:text-emerald-400"></i> ${pharmacy.region}
                             </span>
                             
                             <div class="flex items-center gap-1">
@@ -1105,20 +1192,20 @@
                             </div>
                         </div>
 
-                        <h2 class="text-xl font-black text-slate-800 dark:text-slate-100 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-2">
+                        <h2 class="text-xl font-black text-emerald-950 dark:text-emerald-100 mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-2">
                             <i class="fa-solid fa-prescription-bottle-medical text-emerald-600 dark:text-emerald-400 text-lg"></i>
                             ${pharmacy.name}
                         </h2>
 
-                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mb-4 flex items-center gap-2.5 leading-snug bg-slate-50 dark:bg-slate-700/40 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-700">
+                        <p class="text-xs sm:text-sm text-emerald-900 dark:text-emerald-200 mb-4 flex items-center gap-2.5 leading-snug bg-white/70 dark:bg-emerald-900/30 p-3.5 rounded-2xl border border-emerald-100 dark:border-emerald-800/60">
                             <i class="fa-solid fa-map-pin text-emerald-600 dark:text-emerald-400 shrink-0"></i>
                             <span>${pharmacy.address}</span>
                         </p>
                     </div>
 
                     <div class="space-y-3">
-                        <div class="bg-slate-50 dark:bg-slate-700/40 rounded-2xl p-3 text-xs border border-slate-100 dark:border-slate-700">
-                            <div class="flex items-center gap-2 text-slate-700 dark:text-slate-200 font-semibold">
+                        <div class="bg-white/70 dark:bg-emerald-900/30 rounded-2xl p-3 text-xs border border-emerald-100 dark:border-emerald-800/60">
+                            <div class="flex items-center gap-2 text-emerald-900 dark:text-emerald-200 font-bold">
                                 <i class="fa-regular fa-clock text-emerald-600 dark:text-emerald-400"></i>
                                 <span>${shiftPeriodText}</span>
                             </div>
@@ -1126,16 +1213,16 @@
 
                         <div class="grid grid-cols-2 gap-2">
                             ${pharmacy.mapUrl ? `
-                                <a href="${pharmacy.mapUrl}" target="_blank" rel="noopener opacity" class="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-600 hover:text-white dark:hover:bg-emerald-600 dark:hover:text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-emerald-200 dark:border-emerald-800">
+                                <a href="${pharmacy.mapUrl}" target="_blank" rel="noopener opacity" class="map-link bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-emerald-600 shadow-sm">
                                     <i class="fa-solid fa-map-location-dot"></i> الخريطة
                                 </a>
                             ` : `
-                                <button disabled class="bg-slate-100 dark:bg-slate-700/50 text-slate-400 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 cursor-not-allowed">
-                                    <i class="fa-solid fa-clock"></i> لا يتوفر رابط خرائط
+                                <button disabled class="bg-emerald-100/60 dark:bg-emerald-900/20 text-emerald-400 dark:text-emerald-600 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 cursor-not-allowed">
+                                    <i class="fa-solid fa-clock"></i> لا يتوفر رابط
                                 </button>
                             `}
 
-                            <button data-share-name="${pharmacy.name}" data-share-region="${pharmacy.region}" data-share-address="${pharmacy.address}" data-share-time="${shiftPeriodText}" class="share-btn bg-green-50 dark:bg-green-950/50 text-green-700 dark:text-green-300 hover:bg-green-600 hover:text-white dark:hover:bg-green-600 dark:hover:text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-green-200 dark:border-green-800">
+                            <button data-share-name="${pharmacy.name}" data-share-region="${pharmacy.region}" data-share-address="${pharmacy.address}" data-share-time="${shiftPeriodText}" class="share-btn bg-green-600 text-white hover:bg-green-700 py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-green-600 shadow-sm">
                                 <i class="fa-brands fa-whatsapp text-sm"></i> مشاركة
                             </button>
                         </div>
@@ -1145,7 +1232,12 @@
                 `;
             }).join('');
 
-            // Attach event listeners to dynamic elements
+            grid.querySelectorAll('.map-link').forEach(link => {
+                link.onclick = () => {
+                    incrementAnalytic('mapClicks');
+                };
+            });
+
             grid.querySelectorAll('.fav-btn').forEach(btn => {
                 btn.onclick = () => {
                     const name = btn.getAttribute('data-fav-name');
@@ -1161,11 +1253,12 @@
 
             grid.querySelectorAll('.share-btn').forEach(btn => {
                 btn.onclick = () => {
+                    incrementAnalytic('whatsappShares');
                     const name = btn.getAttribute('data-share-name');
                     const region = btn.getAttribute('data-share-region');
                     const address = btn.getAttribute('data-share-address');
                     const time = btn.getAttribute('data-share-time');
-                    const text = `💊 *${name}* (${region})\n📍 *العنوان:* ${address}\n⏰ *توقيت المناوبة:* ${time}\n🗓️ *التاريخ:* ${selectedDate}\n\nتمت المشاركة من *دليل الصيدليات المناوبة*:`;
+                    const text = `💊 *${name}* (${region})\n📍 *العنوان:* ${address}\n⏰ *توقيت المناوبة:* ${time}\n🗓️ *التاريخ:* ${selectedDate}\n\nتابع جدول الصيدليات المناوبة عبر الرابط التالي:\nhttps://fifadeeb098765-cell.github.io/-/`;
                     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
                     window.open(url, '_blank');
                 };
@@ -1243,7 +1336,6 @@
                 `;
             }).join('');
 
-            // Attach dynamic listeners
             container.querySelectorAll('.remove-date-btn').forEach(btn => {
                 btn.onclick = () => {
                     const dateStr = btn.getAttribute('data-remove-date');
@@ -1391,221 +1483,261 @@
             container.querySelectorAll('.save-master-btn').forEach(btn => {
                 btn.onclick = () => {
                     const oldName = btn.getAttribute('data-save-master');
-                    const nameInput = document.getElementById(`edit-name-${oldName}`).value.trim();
-                    const regionInput = document.getElementById(`edit-region-${oldName}`).value;
-                    const addressInput = document.getElementById(`edit-address-${oldName}`).value.trim();
-                    const mapInput = document.getElementById(`edit-map-${oldName}`).value.trim();
+                    const newName = document.getElementById(`edit-name-${oldName}`).value.trim();
+                    const newRegion = document.getElementById(`edit-region-${oldName}`).value;
+                    const newAddress = document.getElementById(`edit-address-${oldName}`).value.trim();
+                    const newMap = document.getElementById(`edit-map-${oldName}`).value.trim();
 
-                    const pIndex = masterPharmacies.findIndex(p => p.name === oldName);
-                    if (pIndex === -1) return;
+                    if (!newName || !newAddress) {
+                        showToast("يرجى إدخال اسم الصيدلية والعنوان", "error");
+                        return;
+                    }
 
-                    masterPharmacies[pIndex] = {
-                        name: nameInput,
-                        region: regionInput,
-                        address: addressInput,
-                        mapUrl: mapInput
-                    };
-
-                    scheduleData.forEach(day => {
-                        if (day.pharmacies) {
-                            day.pharmacies.forEach(dp => {
-                                if (dp.name === oldName) {
-                                    dp.name = nameInput;
-                                    dp.region = regionInput;
-                                    dp.address = addressInput;
-                                    dp.mapUrl = mapInput;
-                                }
-                            });
-                        }
-                    });
-
-                    saveMasterPharmaciesState();
-                    saveScheduleState();
-                    showToast(`تم حفظ تعديلات (${nameInput}) بنجاح!`);
+                    const item = masterPharmacies.find(p => p.name === oldName);
+                    if (item) {
+                        item.name = newName;
+                        item.region = newRegion;
+                        item.address = newAddress;
+                        item.mapUrl = newMap;
+                        saveMasterPharmaciesState();
+                        showToast(`تم حفظ تعديلات ${newName}`);
+                    }
                 };
             });
 
             container.querySelectorAll('.delete-master-btn').forEach(btn => {
                 btn.onclick = () => {
-                    const name = btn.getAttribute('data-delete-master');
+                    const pharmName = btn.getAttribute('data-delete-master');
                     showConfirmModal(
-                        "حذف الصيدلية من الدليل",
-                        `هل أنت متأكد من حذف (${name}) تماماً من الدليل العام وجداول المناوبات؟`,
+                        "حذف صيدلية من الدليل",
+                        `هل أنت متأكد من حذف (${pharmName}) من الدليل العام؟`,
                         () => {
-                            masterPharmacies = masterPharmacies.filter(p => p.name !== name);
-                            
-                            scheduleData.forEach(day => {
-                                if (day.pharmacies) {
-                                    day.pharmacies = day.pharmacies.filter(dp => dp.name !== name);
-                                }
-                            });
-
+                            masterPharmacies = masterPharmacies.filter(p => p.name !== pharmName);
                             saveMasterPharmaciesState();
-                            saveScheduleState();
-                            showToast(`تم حذف (${name}) من الدليل بنجاح.`);
+                            showToast(`تم حذف ${pharmName} من الدليل`);
                         }
                     );
                 };
             });
         }
 
-        function adjustWrapperScale() {
-            const wrapper = document.getElementById('fb-wrapper');
-            const targetCard = document.getElementById('facebook-export-card');
-            if (wrapper && targetCard) {
-                const wrapperWidth = wrapper.clientWidth;
-                const scale = wrapperWidth / 1080;
-                targetCard.style.transform = `scale(${scale})`;
+        function renderFacebookExportCard() {
+            const dayObj = scheduleData.find(d => d.date === selectedDate);
+            const card = document.getElementById('facebook-export-card');
+            const dayTitle = document.getElementById('fb-card-day-title');
+            const dateTitle = document.getElementById('fb-card-date-title');
+            const list = document.getElementById('fb-pharmacies-list');
+
+            if (!dayObj) {
+                dayTitle.textContent = "--";
+                dateTitle.textContent = selectedDate;
+                list.innerHTML = `<p class="text-slate-400 text-center py-10">لا توجد بيانات متاحة لهذا اليوم</p>`;
+                return;
             }
-        }
 
-        function openFacebookModal() {
-            const modal = document.getElementById('facebook-modal');
-            const visibleSchedule = getVisibleScheduleData();
-            const dateObj = visibleSchedule.find(d => d.date === selectedDate);
-            if (!dateObj) return;
+            dayTitle.textContent = `يوم ${dayObj.dayName}`;
+            dateTitle.textContent = dayObj.date;
 
-            document.getElementById('fb-card-day-title').textContent = dateObj.dayName;
-            document.getElementById('fb-card-date-title').textContent = dateObj.date;
+            const pharmacies = dayObj.pharmacies || [];
 
-            const listContainer = document.getElementById('fb-pharmacies-list');
-            const currentPharmacies = dateObj.pharmacies || [];
+            if (pharmacies.length === 0) {
+                list.innerHTML = `<p class="text-slate-400 text-center py-10">لا توجد صيدليات مسجلة لهذا اليوم</p>`;
+                return;
+            }
 
-            listContainer.innerHTML = currentPharmacies.map(pharmacy => {
-                const shiftText = pharmacy.shiftPeriod ? pharmacy.shiftPeriod : dateObj.shiftTime;
-                return `
-                    <div class="bg-slate-800/90 border border-slate-700/80 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <div class="flex items-center gap-2.5">
-                                    <span class="bg-emerald-500/20 text-emerald-300 font-bold px-4 py-1.5 rounded-full text-base border border-emerald-500/40 flex items-center gap-2">
-                                        <i class="fa-solid fa-location-dot"></i> ${pharmacy.region}
-                                    </span>
-                                    <span class="bg-sky-500/20 text-sky-300 font-bold px-3.5 py-1.5 rounded-full text-sm border border-sky-500/30 flex items-center gap-1.5">
-                                        <i class="fa-brands fa-facebook text-sky-400"></i> صفحة عدسة وادي الشاطر (عبدالحميد ديب)
-                                    </span>
-                                </div>
-                                <span class="text-xs text-emerald-400 font-bold bg-slate-900/60 px-3 py-1 rounded-xl border border-slate-700">
-                                    <i class="fa-solid fa-hospital text-xs"></i> صيدلية مناوبة
-                                </span>
-                            </div>
-                            <h3 class="text-3xl font-black text-white mb-3 flex items-center gap-3">
-                                <i class="fa-solid fa-prescription-bottle-medical text-emerald-400 text-2xl"></i>
-                                ${pharmacy.name}
-                            </h3>
-                            <div class="bg-slate-900/70 px-5 py-4 rounded-2xl border border-slate-700/60 flex items-center gap-3 min-h-[68px]">
-                                <i class="fa-solid fa-map-pin text-emerald-400 text-xl shrink-0"></i>
-                                <span class="text-lg text-slate-200 font-medium leading-normal flex-1 -mt-1">${pharmacy.address}</span>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-slate-700/50 text-base text-slate-300 flex items-center justify-between font-bold">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-regular fa-clock text-emerald-400"></i>
-                                <span>${shiftText}</span>
-                            </div>
-                        </div>
+            list.innerHTML = pharmacies.map(p => `
+                <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-5 mb-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-black text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-hospital text-lg"></i> ${p.name}
+                        </h3>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs font-black px-3 py-1 rounded-full border border-emerald-500/30">
+                            ${p.region}
+                        </span>
                     </div>
-                `;
-            }).join('');
+                    <p class="text-xs text-slate-300 leading-relaxed font-semibold">
+                        📍 ${p.address}
+                    </p>
+                    ${p.shiftPeriod ? `
+                        <div class="mt-2 text-[11px] text-amber-300 font-bold bg-amber-950/40 p-2 rounded-xl border border-amber-800/40">
+                            ⏰ ${p.shiftPeriod}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
 
-            modal.classList.remove('hidden');
-            setTimeout(adjustWrapperScale, 50);
-        }
-
-        // DOM Listeners & Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-                const icon = document.getElementById('theme-icon');
-                if (icon) icon.className = 'fa-solid fa-sun text-yellow-300';
+            // Apply style theme
+            if (currentCardTheme === 'emerald') {
+                card.className = "bg-gradient-to-br from-emerald-950 via-teal-900 to-slate-950 text-white p-10 flex flex-col justify-between transition-colors duration-300";
+            } else {
+                card.className = "bg-slate-900 text-white p-10 flex flex-col justify-between transition-colors duration-300";
             }
 
-            // Realtime clock
-            setInterval(() => {
-                const now = new Date();
-                const clockEl = document.getElementById('current-clock-display');
-                if (clockEl) clockEl.textContent = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            // Scale card preview inside modal
+            const wrapper = document.getElementById('fb-wrapper');
+            if (wrapper) {
+                const scale = wrapper.clientWidth / 1080;
+                card.style.transform = `scale(${scale})`;
+            }
+        }
 
-                const currentTodayStr = getTodayFormattedDate();
-                if (currentTodayStr !== lastCheckedDate) {
-                    lastCheckedDate = currentTodayStr;
-                    initDateSelector();
-                    setTodayDate();
-                    showToast(`انتقل الموقع تلقائياً لتاريخ اليوم الجديد (${currentTodayStr})`);
+        window.onload = function () {
+            
+            // Real-time clock display
+            setInterval(() => {
+                const clockEl = document.getElementById('current-clock-display');
+                if (clockEl) {
+                    const now = new Date();
+                    clockEl.textContent = now.toLocaleTimeString('ar-EG');
                 }
             }, 1000);
 
-            // Admin Button
+            // 1. Share Website Link Via WhatsApp (الخاصية الجديدة المطلوبة)
+            const shareSiteWhatsappBtn = document.getElementById('share-website-whatsapp-btn');
+            if (shareSiteWhatsappBtn) {
+                shareSiteWhatsappBtn.onclick = function () {
+                    incrementAnalytic('whatsappShares'); // زيادة عدّاد التشارك
+                    const siteUrl = "https://fifadeeb098765-cell.github.io/-/";
+                    const shareText = `🔴 *دليل الصيدليات المناوبة (رأس الشغري - الرادار - وادي الشاطر)* 💊\n\nلمعرفة الصيدلية المناوبة اليوم ولجميع الأيام والتفاصيل كاملة، تفضل بزيارة رابط الموقع الرسمي:\n${siteUrl}`;
+                    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+                    window.open(whatsappUrl, '_blank');
+                    showToast("جاري فتح واتساب لمشاركة رابط الموقع مع الأصدقاء");
+                };
+            }
+
+            // Date selector change
+            document.getElementById('date-selector').onchange = (e) => {
+                selectedDate = e.target.value;
+                renderPharmacies();
+            };
+
+            // Set today button
+            document.getElementById('set-today-btn').onclick = () => {
+                setTodayDate();
+            };
+
+            // Toggle Active Shift Only button
+            const activeShiftBtn = document.getElementById('active-shift-btn');
+            const activeBadgeStatus = document.getElementById('active-badge-status');
+            
+            activeShiftBtn.onclick = () => {
+                filterActiveShiftOnly = !filterActiveShiftOnly;
+                if (filterActiveShiftOnly) {
+                    activeShiftBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+                    activeBadgeStatus.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-badge";
+                } else {
+                    activeShiftBtn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+                    activeBadgeStatus.className = "w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600";
+                }
+                renderPharmacies();
+            };
+
+            // Reset filters button in empty state
+            document.getElementById('reset-filters-btn').onclick = () => {
+                filterActiveShiftOnly = false;
+                activeShiftBtn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+                activeBadgeStatus.className = "w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600";
+                filterRegion('all');
+                setTodayDate();
+            };
+
+            // Region filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.onclick = () => {
+                    filterRegion(btn.getAttribute('data-region'));
+                };
+            });
+
+            // Dark Mode Toggle
+            const toggleDarkBtn = document.getElementById('toggle-dark-btn');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeIcon.className = 'fa-solid fa-sun text-amber-300';
+            }
+
+            toggleDarkBtn.onclick = () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.className = 'fa-solid fa-moon text-emerald-100';
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.className = 'fa-solid fa-sun text-amber-300';
+                }
+            };
+
+            // Admin Button Click
             document.getElementById('admin-menu-btn').onclick = () => {
-                if (isAdminLoggedIn) openAdminModal();
-                else openAuthModal();
+                if (isAdminLoggedIn) {
+                    openAdminModal();
+                } else {
+                    openAuthModal();
+                }
             };
 
             document.getElementById('close-auth-modal-btn').onclick = closeAuthModal;
+            document.getElementById('toggle-auth-pass-btn').onclick = () => {
+                const passInput = document.getElementById('auth-password-input');
+                const icon = document.getElementById('auth-pass-toggle-icon');
+                if (passInput.type === 'password') {
+                    passInput.type = 'text';
+                    icon.className = 'fa-solid fa-eye-slash';
+                } else {
+                    passInput.type = 'password';
+                    icon.className = 'fa-solid fa-eye';
+                }
+            };
 
+            // Auth Form Submit
             document.getElementById('auth-form').onsubmit = (e) => {
                 e.preventDefault();
-                const inputPass = document.getElementById('auth-password-input').value;
-                if (inputPass === adminPassword) {
+                const pass = document.getElementById('auth-password-input').value;
+                if (pass === adminPassword) {
                     isAdminLoggedIn = true;
-                    closeAuthModal();
                     updateAdminBadgePill();
+                    closeAuthModal();
                     openAdminModal();
-                    showToast("تم تسجيل الدخول بنجاح كمسؤول!");
+                    showToast("تم تسجيل الدخول بنجاح كمسؤول بالنظام");
                 } else {
                     document.getElementById('auth-error-msg').classList.remove('hidden');
                 }
             };
 
-            document.getElementById('toggle-auth-pass-btn').onclick = () => {
-                const input = document.getElementById('auth-password-input');
-                const icon = document.getElementById('auth-pass-toggle-icon');
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.className = 'fa-solid fa-eye-slash';
-                } else {
-                    input.type = 'password';
-                    icon.className = 'fa-solid fa-eye';
-                }
-            };
-
+            // Admin Modal Close
             document.getElementById('close-admin-modal-btn').onclick = closeAdminModal;
 
+            // Admin Tab Switching
             document.getElementById('tab-btn-schedule').onclick = () => switchAdminTab('tab-schedule');
             document.getElementById('tab-btn-directory').onclick = () => switchAdminTab('tab-directory');
+            document.getElementById('tab-btn-analytics').onclick = () => switchAdminTab('tab-analytics');
             document.getElementById('tab-btn-settings').onclick = () => switchAdminTab('tab-settings');
 
+            // Visible Days Limit Change
             document.getElementById('visible-days-count-select').onchange = (e) => {
-                visibleDaysLimit = parseInt(e.target.value);
+                visibleDaysLimit = parseInt(e.target.value) || 14;
                 saveSettingsState();
                 initDateSelector();
                 renderPharmacies();
-                showToast(`تم تغيير عدد الأيام المعروضة للعامة إلى ${visibleDaysLimit} أيام.`);
+                showToast(`تم تغيير عدد الأيام المعروضة إلى ${visibleDaysLimit} يوم`);
             };
 
-            document.getElementById('new-date-input').onchange = () => {
-                const dateVal = document.getElementById('new-date-input').value;
-                if (!dateVal) return;
-                const parts = dateVal.split('-');
-                if (parts.length !== 3) return;
-                const dateObj = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-                if (isNaN(dateObj.getTime())) return;
-                const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-                document.getElementById('new-dayname-input').value = days[dateObj.getDay()];
-            };
-
+            // Add new schedule date form
             document.getElementById('add-schedule-date-form').onsubmit = (e) => {
                 e.preventDefault();
                 const dateVal = document.getElementById('new-date-input').value;
                 const dayNameVal = document.getElementById('new-dayname-input').value.trim();
 
+                if (!dateVal || !dayNameVal) return;
+
                 if (scheduleData.some(d => d.date === dateVal)) {
-                    showToast("هذا التاريخ موجود بالفعل في الجدول!", "error");
+                    showToast("هذا التاريخ مضاف بالفعل بالجدول!", "error");
                     return;
                 }
 
-                scheduleData.push({
+                scheduleData.unshift({
                     date: dateVal,
                     dayName: dayNameVal,
                     shiftTime: "من الساعة 8:00 مساءً لغاية الساعة 12:00 ليلاً",
@@ -1613,13 +1745,28 @@
                 });
 
                 scheduleData.sort((a, b) => new Date(a.date) - new Date(b.date));
-                document.getElementById('new-date-input').value = '';
-                document.getElementById('new-dayname-input').value = '';
 
                 saveScheduleState();
-                showToast(`تمت إضافة التاريخ (${dateVal} - ${dayNameVal}) بنجاح!`);
+                initDateSelector();
+                renderPharmacies();
+                renderAdminScheduleTab();
+
+                document.getElementById('new-date-input').value = '';
+                document.getElementById('new-dayname-input').value = '';
+                showToast(`تمت إضافة التاريخ (${dateVal}) بنجاح.`);
             };
 
+            // Auto set day name on date input change
+            document.getElementById('new-date-input').onchange = (e) => {
+                const dateVal = e.target.value;
+                if (dateVal) {
+                    const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                    const d = new Date(dateVal);
+                    document.getElementById('new-dayname-input').value = days[d.getDay()];
+                }
+            };
+
+            // Add Master Pharmacy form
             document.getElementById('add-master-pharmacy-form').onsubmit = (e) => {
                 e.preventDefault();
                 const name = document.getElementById('dir-name-input').value.trim();
@@ -1627,196 +1774,157 @@
                 const address = document.getElementById('dir-address-input').value.trim();
                 const mapUrl = document.getElementById('dir-map-input').value.trim();
 
-                if (masterPharmacies.some(p => p.name.trim().toLowerCase() === name.toLowerCase())) {
-                    showToast("توجد صيدلية بهذا الاسم بالفعل في الدليل!", "error");
+                if (!name || !address) return;
+
+                if (masterPharmacies.some(p => p.name === name)) {
+                    showToast("توجد صيدلية بنفس الاسم بالدليل!", "error");
                     return;
                 }
 
                 masterPharmacies.push({ name, region, address, mapUrl });
+                saveMasterPharmaciesState();
+                renderAdminDirectoryTab();
+                renderAdminScheduleTab();
+
                 document.getElementById('dir-name-input').value = '';
                 document.getElementById('dir-address-input').value = '';
                 document.getElementById('dir-map-input').value = '';
-
-                saveMasterPharmaciesState();
-                showToast(`تمت إضافة (${name}) إلى الدليل العام بنجاح!`);
+                showToast(`تمت إضافة ${name} إلى الدليل العام.`);
             };
 
-            document.getElementById('change-pass-form').onsubmit = (e) => {
-                e.preventDefault();
-                const newPass = document.getElementById('new-password-input').value;
-                const confirmPass = document.getElementById('confirm-password-input').value;
-
-                if (newPass !== confirmPass) {
-                    showToast("كلمتا السر غير متطابقتين!", "error");
-                    return;
-                }
-
-                adminPassword = newPass;
-                saveSettingsState();
-                document.getElementById('new-password-input').value = '';
-                document.getElementById('confirm-password-input').value = '';
-
-                showToast("تم تغيير كلمة السر بنجاح! كلمة السر الجديدة هي التي ستستخدم مستقبلاً.");
-            };
-
-            document.getElementById('toggle-new-pass-btn').onclick = () => {
-                const input = document.getElementById('new-password-input');
-                const icon = document.getElementById('new-pass-icon');
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.className = 'fa-solid fa-eye-slash';
-                } else {
-                    input.type = 'password';
-                    icon.className = 'fa-solid fa-eye';
-                }
-            };
-
-            document.getElementById('reset-defaults-btn').onclick = () => {
+            // Reset Analytics Button
+            document.getElementById('reset-analytics-btn').onclick = () => {
                 showConfirmModal(
-                    "استعادة البيانات الافتراضية",
-                    "هل أنت متأكد من مسح التغييرات واستعادة الجدول الافتراضي الأصلي لجميع الأيام المعتمدة؟",
+                    "تصفير الإحصائيات",
+                    "هل أنت متأكد من تصفير جميع عدادات الإحصائيات بالكامل؟",
                     () => {
-                        scheduleData = [...defaultScheduleData];
-                        masterPharmacies = [...defaultMasterPharmacies];
-                        saveScheduleState();
-                        saveMasterPharmaciesState();
-                        showToast("تمت استعادة البيانات الافتراضية بنجاح.");
+                        analyticsData = { pageViews: 0, imageExports: 0, whatsappShares: 0, mapClicks: 0 };
+                        set(analyticsRef, analyticsData);
+                        updateAnalyticsUI();
+                        showToast("تم تصفير جميع الإحصائيات بنجاح");
                     }
                 );
             };
 
-            document.getElementById('toggle-dark-btn').onclick = () => {
-                const isDark = document.documentElement.classList.toggle('dark');
-                const icon = document.getElementById('theme-icon');
-                if (isDark) {
-                    icon.className = 'fa-solid fa-sun text-yellow-300';
-                    localStorage.setItem('theme', 'dark');
+            // Change Password Form
+            document.getElementById('change-pass-form').onsubmit = (e) => {
+                e.preventDefault();
+                const newP = document.getElementById('new-password-input').value;
+                const confP = document.getElementById('confirm-password-input').value;
+
+                if (newP !== confP) {
+                    showToast("كلمتا السر غير متطابقتين!", "error");
+                    return;
+                }
+
+                adminPassword = newP;
+                saveSettingsState();
+                document.getElementById('new-password-input').value = '';
+                document.getElementById('confirm-password-input').value = '';
+                showToast("تم تحديث كلمة السر الخاصة بالمسؤول بنجاح");
+            };
+
+            // Password Toggle for Settings
+            document.getElementById('toggle-new-pass-btn').onclick = () => {
+                const passInput = document.getElementById('new-password-input');
+                const icon = document.getElementById('new-pass-icon');
+                if (passInput.type === 'password') {
+                    passInput.type = 'text';
+                    icon.className = 'fa-solid fa-eye-slash';
                 } else {
-                    icon.className = 'fa-solid fa-moon text-emerald-100';
-                    localStorage.setItem('theme', 'light');
+                    passInput.type = 'password';
+                    icon.className = 'fa-solid fa-eye';
                 }
             };
 
-            document.getElementById('date-selector').onchange = (e) => {
-                selectedDate = e.target.value;
-                renderPharmacies();
+            // Reset Defaults Button
+            document.getElementById('reset-defaults-btn').onclick = () => {
+                showConfirmModal(
+                    "استعادة البيانات الافتراضية",
+                    "سيتم حذف جميع التعديلات والعودة للجدول والدليل الافتراضي. هل تريد الاستمرار؟",
+                    () => {
+                        scheduleData = defaultScheduleData;
+                        masterPharmacies = defaultMasterPharmacies;
+                        saveScheduleState();
+                        saveMasterPharmaciesState();
+                        initDateSelector();
+                        renderPharmacies();
+                        renderAdminScheduleTab();
+                        renderAdminDirectoryTab();
+                        showToast("تمت استعادة البيانات الافتراضية بنجاح");
+                    }
+                );
             };
 
-            document.getElementById('set-today-btn').onclick = setTodayDate;
-
-            document.querySelectorAll('#region-filters button').forEach(btn => {
-                btn.onclick = () => {
-                    const region = btn.getAttribute('data-region');
-                    filterRegion(region);
-                };
-            });
-
-            document.getElementById('search-input').oninput = handleSearch;
-            document.getElementById('clear-search-btn').onclick = () => {
-                document.getElementById('search-input').value = '';
-                handleSearch();
+            // Open Facebook Export Modal
+            document.getElementById('open-fb-modal-btn').onclick = () => {
+                renderFacebookExportCard();
+                document.getElementById('facebook-modal').classList.remove('hidden');
             };
 
-            document.getElementById('active-shift-btn').onclick = () => {
-                filterActiveShiftOnly = !filterActiveShiftOnly;
-                const btn = document.getElementById('active-shift-btn');
-                const badge = document.getElementById('active-badge-status');
-                if (filterActiveShiftOnly) {
-                    btn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
-                    badge.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-badge';
-                } else {
-                    btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
-                    badge.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600';
-                }
-                renderPharmacies();
+            document.getElementById('close-fb-modal-btn').onclick = () => {
+                document.getElementById('facebook-modal').classList.add('hidden');
             };
 
-            document.getElementById('reset-filters-btn').onclick = () => {
-                selectedRegion = "all";
-                searchQuery = "";
-                filterActiveShiftOnly = false;
-                document.getElementById('search-input').value = '';
-                document.getElementById('clear-search-btn').classList.add('hidden');
-                filterRegion('all');
-                const btn = document.getElementById('active-shift-btn');
-                const badge = document.getElementById('active-badge-status');
-                btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
-                badge.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600';
-                setTodayDate();
+            document.getElementById('cancel-fb-modal-btn').onclick = () => {
+                document.getElementById('facebook-modal').classList.add('hidden');
             };
-
-            document.getElementById('open-fb-modal-btn').onclick = openFacebookModal;
-            document.getElementById('close-fb-modal-btn').onclick = () => document.getElementById('facebook-modal').classList.add('hidden');
-            document.getElementById('cancel-fb-modal-btn').onclick = () => document.getElementById('facebook-modal').classList.add('hidden');
 
             document.getElementById('theme-btn-dark').onclick = () => {
                 currentCardTheme = 'dark';
-                const card = document.getElementById('facebook-export-card');
-                card.className = 'bg-slate-900 text-white p-12 flex flex-col justify-between';
-                document.getElementById('theme-btn-dark').className = 'px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-900 text-white border border-slate-700';
-                document.getElementById('theme-btn-emerald').className = 'px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200';
+                renderFacebookExportCard();
             };
 
             document.getElementById('theme-btn-emerald').onclick = () => {
                 currentCardTheme = 'emerald';
-                const card = document.getElementById('facebook-export-card');
-                card.className = 'bg-gradient-to-br from-teal-900 via-emerald-900 to-slate-900 text-white p-12 flex flex-col justify-between';
-                document.getElementById('theme-btn-emerald').className = 'px-3 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 text-white border border-emerald-400';
-                document.getElementById('theme-btn-dark').className = 'px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200';
+                renderFacebookExportCard();
             };
 
-            document.getElementById('download-img-btn').onclick = async () => {
-                const btn = document.getElementById('download-img-btn');
-                const targetCard = document.getElementById('facebook-export-card');
-                const originalTransform = targetCard.style.transform;
-                
-                try {
-                    btn.disabled = true;
-                    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري إنشاء الصورة...</span>`;
+            // Download PNG Image
+            document.getElementById('download-img-btn').onclick = () => {
+                const card = document.getElementById('facebook-export-card');
+                if (!card) return;
 
-                    if (document.fonts && document.fonts.ready) {
-                        await document.fonts.ready;
-                    }
+                const originalTransform = card.style.transform;
+                card.style.transform = 'none';
 
-                    targetCard.style.transform = 'none';
+                showToast("جاري تحضير واستخراج الصورة عالية الدقة...");
 
-                    const canvas = await html2canvas(targetCard, {
-                        scale: 2,
-                        useCORS: true,
-                        allowTaint: true,
-                        backgroundColor: null,
-                        width: 1080,
-                        height: 1080,
-                        logging: false
-                    });
+                html2canvas(card, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: null
+                }).then(canvas => {
+                    card.style.transform = originalTransform;
+                    
+                    incrementAnalytic('imageExports'); // زيادة عدّاد استخراج الصور
 
-                    targetCard.style.transform = originalTransform;
-
-                    const imageURI = canvas.toDataURL("image/png");
-                    const visibleSchedule = getVisibleScheduleData();
-                    const dateObj = visibleSchedule.find(d => d.date === selectedDate);
-                    const fileName = `صيدليات_مناوبة_${dateObj ? dateObj.dayName : 'جدول'}_${selectedDate}.png`;
-
+                    const image = canvas.toDataURL("image/png");
                     const link = document.createElement('a');
-                    link.download = fileName;
-                    link.href = imageURI;
-                    document.body.appendChild(link);
+                    link.download = `pharmacy-shift-${selectedDate}.png`;
+                    link.href = image;
                     link.click();
-                    document.body.removeChild(link);
 
-                } catch (err) {
-                    console.error("Error generating image", err);
-                    showToast("حدث خطأ أثناء إنشاء الصورة. يرجى المحاولة مرة أخرى.", "error");
-                } finally {
-                    targetCard.style.transform = originalTransform;
-                    btn.disabled = false;
-                    btn.innerHTML = `<i class="fa-solid fa-download text-base"></i> <span>تحميل الصورة عالية الدقة (PNG)</span>`;
+                    showToast("تم تحميل صورة الفيسبوك بنجاح!");
+                }).catch(err => {
+                    card.style.transform = originalTransform;
+                    showToast("حدث خطأ أثناء تصدير الصورة", "error");
+                });
+            };
+
+            // Resize handle for FB Card Preview
+            window.onresize = () => {
+                const wrapper = document.getElementById('fb-wrapper');
+                const card = document.getElementById('facebook-export-card');
+                if (wrapper && card && !document.getElementById('facebook-modal').classList.contains('hidden')) {
+                    const scale = wrapper.clientWidth / 1080;
+                    card.style.transform = `scale(${scale})`;
                 }
             };
-
-            window.addEventListener('resize', adjustWrapperScale);
-        });
+        };
     </script>
 </body>
 </html>
-,
+
+```
