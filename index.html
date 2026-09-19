@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دليل الصيدليات المناوبة - لوحة تحكم لإدارة الجدول والتحليلات</title>
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -90,7 +89,6 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
 
-    <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-5 left-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
     <!-- Header Section -->
@@ -225,7 +223,6 @@
 
     </main>
 
-    <!-- Admin Password Auth Modal -->
     <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative">
             <button id="close-auth-modal-btn" class="absolute top-4 left-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2">
@@ -520,7 +517,6 @@
         </div>
     </div>
 
-    <!-- Facebook Image Export Modal Dialog -->
     <div id="facebook-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 hidden transition-opacity duration-300">
         <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col max-h-[92vh] overflow-hidden">
             
@@ -550,39 +546,45 @@
                 </div>
             </div>
 
-            <!-- FB Card Export Area (1080x1080 Canvas) -->
+            <!-- FB Card Export Area (1080x1080 Canvas) - Redesigned professionally with enhanced aesthetic depth -->
             <div class="flex-grow flex items-center justify-center overflow-auto p-2 bg-slate-100 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800">
                 <div class="fb-preview-wrapper" id="fb-wrapper">
-                    <div id="facebook-export-card" class="bg-slate-900 text-white p-8 sm:p-10 flex flex-col justify-between transition-colors duration-300">
-                        <div>
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-5 mb-5">
-                                <div class="flex items-center gap-3.5">
-                                    <div class="bg-emerald-500 p-3.5 rounded-2xl text-slate-950 text-2xl font-black shrink-0">
+                    <div id="facebook-export-card" class="bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white p-10 flex flex-col justify-between transition-colors duration-300 border-4 border-emerald-500/30 shadow-2xl relative overflow-hidden">
+                        
+                        <!-- Background decorative glow elements for premium look -->
+                        <div class="absolute -top-32 -right-32 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-teal-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div class="relative z-10">
+                            <!-- Card Header -->
+                            <div class="flex justify-between items-center border-b-2 border-emerald-500/20 pb-6 mb-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 p-4 rounded-3xl text-white text-3xl font-black shadow-lg shadow-emerald-600/30 shrink-0 border border-emerald-400/40">
                                         <i class="fa-solid fa-kit-medical"></i>
                                     </div>
                                     <div>
-                                        <h2 class="text-2xl font-black text-white">موقع دليل الصيدليات المناوبة</h2>
-                                        <p class="text-xs text-slate-400 font-semibold mt-0.5">رأس الشغري - الرادار - وادي الشاطر</p>
+                                        <h2 class="text-3xl font-black text-white tracking-wide">موقع دليل الصيدليات المناوبة</h2>
+                                        <p class="text-sm text-emerald-300 font-bold mt-1 tracking-wider">رأس الشغري - الرادار - وادي الشاطر</p>
                                     </div>
                                 </div>
-                                <div class="text-left bg-slate-800/80 border border-slate-700/60 px-4 py-2.5 rounded-2xl shrink-0">
-                                    <div id="fb-card-day-title" class="text-emerald-400 text-lg font-black">--</div>
-                                    <div id="fb-card-date-title" class="text-slate-300 text-xs font-bold font-mono mt-0.5">----/--/--</div>
+                                <div class="text-left bg-slate-900/90 border-2 border-emerald-500/30 px-5 py-3.5 rounded-3xl shrink-0 shadow-inner">
+                                    <div id="fb-card-day-title" class="text-emerald-400 text-xl font-black">--</div>
+                                    <div id="fb-card-date-title" class="text-slate-300 text-sm font-bold font-mono mt-0.5">----/--/--</div>
                                 </div>
                             </div>
 
-                            <!-- List of Pharmacies dynamically rendered without overflow -->
+                            <!-- List of Pharmacies dynamically rendered -->
                             <div id="fb-pharmacies-list"></div>
                         </div>
 
                         <!-- Card Footer -->
-                        <div class="pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400 shrink-0">
-                            <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                        <div class="pt-5 border-t-2 border-emerald-500/20 flex justify-between items-center text-sm text-slate-300 shrink-0 relative z-10">
+                            <div class="flex items-center gap-2.5 text-emerald-400 font-extrabold text-base bg-emerald-950/80 px-4 py-2 rounded-2xl border border-emerald-800/60 shadow">
                                 <i class="fa-solid fa-location-dot"></i>
                                 <span>جدول الصيدليات المناوبة الرسمية</span>
                             </div>
-                            <div class="flex items-center gap-1.5 font-bold text-sky-400 text-sm">
-                                <i class="fa-brands fa-facebook"></i>
+                            <div class="flex items-center gap-2 font-extrabold text-sky-300 text-base bg-sky-950/80 px-4 py-2 rounded-2xl border border-sky-800/60 shadow">
+                                <i class="fa-brands fa-facebook text-sky-400"></i>
                                 <span>عدسة وادي الشاطر (عبدالحميد ديب)</span>
                             </div>
                         </div>
@@ -632,7 +634,6 @@
         </div>
     </footer>
 
-    <!-- Firebase Script Setup -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
@@ -1218,7 +1219,7 @@
                                 </a>
                             ` : `
                                 <button disabled class="bg-emerald-100/60 dark:bg-emerald-900/20 text-emerald-400 dark:text-emerald-600 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 cursor-not-allowed">
-                                    <i class="fa-solid fa-clock"></i> لا يتوفر رابط
+                                    <i class="fa-solid fa-clock"></i> سيتم إضافة الخريطة قريباً
                                 </button>
                             `}
 
@@ -1469,7 +1470,7 @@
             });
         }
 
-        /* Optimized Facebook Modal Generation: Lens name directly next to region, and dynamic sizing for 4 pharmacies overflow fix */
+        /* Enhanced professional card design rendering: matching exact requirements with improved color grading and aesthetics */
         function openFacebookModal() {
             const dateObj = scheduleData.find(d => d.date === selectedDate);
             if (!dateObj) {
@@ -1487,34 +1488,31 @@
             if (count === 0) {
                 container.innerHTML = `<div class="text-center py-12 text-slate-400 font-bold text-xl">لا توجد صيدليات مناوبة مسجلة في هذا اليوم.</div>`;
             } else {
-                // Dynamic styling & Layout depending on count to guarantee no overflow when 4 pharmacies!
                 let listContainerClass = "flex flex-col gap-4";
-                let cardPadding = "p-5";
+                let cardPadding = "p-6";
                 let titleSize = "text-2xl font-black";
-                let addressPadding = "p-3 mb-2 text-sm";
-                let shiftPadding = "p-3 text-xs";
-                let badgeSize = "text-sm px-3.5 py-1";
-                let fbBadgeSize = "text-xs px-2.5 py-1";
+                let addressPadding = "p-3.5 mb-3 text-base";
+                let shiftPadding = "p-3.5 text-sm";
+                let badgeSize = "text-sm px-4 py-1.5";
+                let fbBadgeSize = "text-xs px-3 py-1";
 
                 if (count >= 4) {
-                    // 2x2 Grid for 4 or more pharmacies ensuring zero overflow inside 1080x1080 canvas
-                    listContainerClass = "grid grid-cols-2 gap-3.5";
-                    cardPadding = "p-4";
+                    listContainerClass = "grid grid-cols-2 gap-4";
+                    cardPadding = "p-5";
                     titleSize = "text-xl font-black";
-                    addressPadding = "p-2.5 mb-2 text-xs";
-                    shiftPadding = "p-2 text-xs";
-                    badgeSize = "text-xs px-2.5 py-1";
-                    fbBadgeSize = "text-[11px] px-2 py-0.5";
-                } else if (count === 3) {
-                    listContainerClass = "flex flex-col gap-3";
-                    cardPadding = "p-4";
-                    titleSize = "text-xl font-black";
-                    addressPadding = "p-2.5 mb-2 text-xs sm:text-sm";
+                    addressPadding = "p-3 mb-2.5 text-xs sm:text-sm";
                     shiftPadding = "p-2.5 text-xs";
                     badgeSize = "text-xs px-3 py-1";
+                    fbBadgeSize = "text-[11px] px-2.5 py-0.5";
+                } else if (count === 3) {
+                    listContainerClass = "flex flex-col gap-3.5";
+                    cardPadding = "p-5";
+                    titleSize = "text-xl font-black";
+                    addressPadding = "p-3 mb-3 text-sm";
+                    shiftPadding = "p-3 text-xs";
+                    badgeSize = "text-xs px-3.5 py-1";
                     fbBadgeSize = "text-xs px-2.5 py-1";
                 } else {
-                    // 1 or 2 pharmacies
                     listContainerClass = "flex flex-col gap-5";
                     cardPadding = "p-6";
                     titleSize = "text-3xl font-black";
@@ -1530,36 +1528,39 @@
                     const shiftPeriodText = p.shiftPeriod ? p.shiftPeriod : dateObj.shiftTime;
 
                     return `
-                    <div class="bg-slate-800/70 border border-slate-700/80 rounded-2xl ${cardPadding} shadow-lg flex flex-col justify-between">
-                        <div>
+                    <div class="bg-gradient-to-br from-slate-900/90 via-slate-900/80 to-emerald-950/70 border-2 border-emerald-500/30 rounded-3xl ${cardPadding} shadow-xl flex flex-col justify-between backdrop-blur-md relative overflow-hidden group">
+                        <!-- Subtle card highlight bar -->
+                        <div class="absolute top-0 right-0 bottom-0 w-2 bg-gradient-to-b from-emerald-400 to-teal-500 rounded-r-xl"></div>
+
+                        <div class="pr-3">
                             <!-- اسم المنطقة وبجانبها مباشرة كلمة عدسة وادي الشاطر ( عبدالحميد ديب ) -->
-                            <div class="flex items-center flex-wrap gap-2 mb-2">
-                                <div class="bg-emerald-500/20 text-emerald-300 font-black ${badgeSize} rounded-full border border-emerald-500/30 flex items-center gap-1.5 shrink-0">
+                            <div class="flex items-center flex-wrap gap-2.5 mb-3">
+                                <div class="bg-emerald-500/25 text-emerald-300 font-extrabold ${badgeSize} rounded-full border border-emerald-500/40 flex items-center gap-1.5 shrink-0 shadow-sm">
                                     <i class="fa-solid fa-location-dot text-emerald-400"></i>
                                     <span>${p.region}</span>
                                 </div>
-                                <div class="flex items-center gap-1.5 text-sky-400 font-bold ${fbBadgeSize} bg-sky-950/50 rounded-full border border-sky-800/50 shrink-0">
+                                <div class="flex items-center gap-1.5 text-sky-300 font-extrabold ${fbBadgeSize} bg-sky-950/80 rounded-full border border-sky-800/60 shrink-0 shadow-sm">
                                     <i class="fa-brands fa-facebook text-sky-400"></i>
                                     <span>عدسة وادي الشاطر ( عبدالحميد ديب )</span>
                                 </div>
                             </div>
 
                             <!-- اسم الصيدلية -->
-                            <h3 class="${titleSize} text-white mb-2 flex items-center gap-2.5">
-                                <i class="fa-solid fa-prescription-bottle-medical text-emerald-400 shrink-0"></i>
+                            <h3 class="${titleSize} text-white mb-2.5 flex items-center gap-2.5 tracking-wide">
+                                <i class="fa-solid fa-prescription-bottle-medical text-emerald-400 shrink-0 text-xl"></i>
                                 <span>${p.name}</span>
                             </h3>
 
                             <!-- العنوان -->
-                            <p class="${addressPadding} text-slate-300 leading-snug flex items-start gap-2 bg-slate-900/60 rounded-xl border border-slate-800/80">
-                                <i class="fa-solid fa-map-pin text-emerald-400 shrink-0 mt-0.5"></i>
+                            <p class="${addressPadding} text-slate-200 leading-relaxed flex items-start gap-2.5 bg-slate-950/70 rounded-2xl border border-emerald-500/10 shadow-inner">
+                                <i class="fa-solid fa-map-pin text-emerald-400 shrink-0 mt-1"></i>
                                 <span>${p.address}</span>
                             </p>
                         </div>
 
                         <!-- أوقات المناوبة للصيدلية -->
-                        <div class="bg-emerald-950/50 border border-emerald-800/60 rounded-xl ${shiftPadding} flex items-center gap-2 text-emerald-200 font-bold">
-                            <i class="fa-regular fa-clock text-emerald-400 shrink-0"></i>
+                        <div class="bg-emerald-950/80 border-2 border-emerald-500/30 rounded-2xl ${shiftPadding} flex items-center gap-2.5 text-emerald-200 font-black shadow-inner mt-2">
+                            <i class="fa-regular fa-clock text-emerald-400 shrink-0 text-base"></i>
                             <span>أوقات المناوبة: ${shiftPeriodText}</span>
                         </div>
                     </div>
@@ -1591,11 +1592,11 @@
             const emeraldBtn = document.getElementById('theme-btn-emerald');
 
             if (theme === 'dark') {
-                card.className = "bg-slate-900 text-white p-8 sm:p-10 flex flex-col justify-between transition-colors duration-300";
+                card.className = "bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white p-10 flex flex-col justify-between transition-colors duration-300 border-4 border-emerald-500/30 shadow-2xl relative overflow-hidden";
                 darkBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-900 text-white border border-slate-700";
                 emeraldBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200";
             } else {
-                card.className = "bg-emerald-950 text-white p-8 sm:p-10 flex flex-col justify-between transition-colors duration-300";
+                card.className = "bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-950 text-white p-10 flex flex-col justify-between transition-colors duration-300 border-4 border-teal-500/40 shadow-2xl relative overflow-hidden";
                 emeraldBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 text-white border border-emerald-500";
                 darkBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200";
             }
@@ -1623,284 +1624,294 @@
 
                 const link = document.createElement('a');
                 link.download = `صيدليات_المناوبة_${selectedDate}.png`;
-                link.href = canvas.toDataURL('image/png');
+                link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
-
-                incrementAnalytic('imageExports');
 
                 downloadBtn.disabled = false;
                 downloadBtn.innerHTML = `<i class="fa-solid fa-download text-base"></i> <span>تحميل الصورة عالية الدقة (PNG)</span>`;
-                showToast("تم تحميل الصورة بنجاح!");
+                
+                incrementAnalytic('imageExports');
+                showToast("تم تنزيل صورة منشور الفيسبوك بنجاح!");
             }).catch(err => {
                 card.style.transform = currentTransform;
                 downloadBtn.disabled = false;
                 downloadBtn.innerHTML = `<i class="fa-solid fa-download text-base"></i> <span>تحميل الصورة عالية الدقة (PNG)</span>`;
-                showToast("حدث خطأ أثناء استخراج الصورة!", "error");
+                showToast("حدث خطأ أثناء تصدير الصورة، حاول مجدداً.", "error");
             });
         }
 
-        // Live Clock Setup
-        function updateClock() {
-            const clockEl = document.getElementById('current-clock-display');
-            if (!clockEl) return;
-            const now = new Date();
-            clockEl.textContent = now.toLocaleTimeString('ar-EG', { hour12: true });
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Dark Mode Logic
-        const toggleDarkBtn = document.getElementById('toggle-dark-btn');
-        const themeIcon = document.getElementById('theme-icon');
-
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            themeIcon.className = 'fa-solid fa-sun text-amber-300';
-        } else {
-            document.documentElement.classList.remove('dark');
-            themeIcon.className = 'fa-solid fa-moon text-base';
-        }
-
-        toggleDarkBtn.onclick = () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                themeIcon.className = 'fa-solid fa-moon text-base';
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                themeIcon.className = 'fa-solid fa-sun text-amber-300';
-            }
-        };
-
-        // Event Listeners Initialization
-        document.getElementById('date-selector').onchange = (e) => {
-            selectedDate = e.target.value;
-            renderPharmacies();
-        };
-
-        document.getElementById('set-today-btn').onclick = () => setTodayDate();
-
-        const activeShiftBtn = document.getElementById('active-shift-btn');
-        const activeBadgeStatus = document.getElementById('active-badge-status');
-
-        activeShiftBtn.onclick = () => {
-            filterActiveShiftOnly = !filterActiveShiftOnly;
-            if (filterActiveShiftOnly) {
-                activeShiftBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
-                activeBadgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-badge';
-            } else {
-                activeShiftBtn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
-                activeBadgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600';
-            }
-            renderPharmacies();
-        };
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.onclick = () => filterRegion(btn.getAttribute('data-region'));
-        });
-
-        document.getElementById('reset-filters-btn').onclick = () => {
-            selectedRegion = 'all';
-            filterActiveShiftOnly = false;
-            activeShiftBtn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
-            activeBadgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600';
-            filterRegion('all');
-        };
-
-        // Admin Auth & Menu Modal Events
-        document.getElementById('admin-menu-btn').onclick = () => {
-            if (isAdminLoggedIn) {
-                openAdminModal();
-            } else {
-                openAuthModal();
-            }
-        };
-
-        document.getElementById('close-auth-modal-btn').onclick = closeAuthModal;
-
-        document.getElementById('toggle-auth-pass-btn').onclick = () => {
-            const input = document.getElementById('auth-password-input');
-            const icon = document.getElementById('auth-pass-toggle-icon');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fa-solid fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fa-solid fa-eye';
-            }
-        };
-
-        document.getElementById('auth-form').onsubmit = (e) => {
-            e.preventDefault();
-            const passVal = document.getElementById('auth-password-input').value;
-            if (passVal === adminPassword) {
-                isAdminLoggedIn = true;
-                closeAuthModal();
-                updateAdminBadgePill();
-                openAdminModal();
-                showToast('تم تسجيل الدخول بنجاح كمسؤول!');
-            } else {
-                document.getElementById('auth-error-msg').classList.remove('hidden');
-            }
-        };
-
-        // Admin Modal Navigation Tabs
-        document.getElementById('close-admin-modal-btn').onclick = closeAdminModal;
-        document.getElementById('tab-btn-schedule').onclick = () => switchAdminTab('tab-schedule');
-        document.getElementById('tab-btn-directory').onclick = () => switchAdminTab('tab-directory');
-        document.getElementById('tab-btn-analytics').onclick = () => switchAdminTab('tab-analytics');
-        document.getElementById('tab-btn-settings').onclick = () => switchAdminTab('tab-settings');
-
-        // Visible Days Limit Change
-        document.getElementById('visible-days-count-select').onchange = (e) => {
-            visibleDaysLimit = parseInt(e.target.value, 10);
-            saveSettingsState();
-            initDateSelector();
-            renderPharmacies();
-            showToast(`تم تغيير عدد الأيام المعروضة إلى ${visibleDaysLimit} يوم.`);
-        };
-
-        // Add Schedule Date Form
-        document.getElementById('add-schedule-date-form').onsubmit = (e) => {
-            e.preventDefault();
-            const dateVal = document.getElementById('new-date-input').value;
-            const dayNameVal = document.getElementById('new-dayname-input').value.trim();
-
-            if (!dateVal || !dayNameVal) return;
-
-            if (scheduleData.some(d => d.date === dateVal)) {
-                showToast("هذا التاريخ مضاف بالفعل بالجدول!", "error");
-                return;
+        // Global Event Listeners Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateSelector = document.getElementById('date-selector');
+            if (dateSelector) {
+                dateSelector.onchange = (e) => {
+                    selectedDate = e.target.value;
+                    renderPharmacies();
+                };
             }
 
-            scheduleData.unshift({
-                date: dateVal,
-                dayName: dayNameVal,
-                shiftTime: "من الساعة 8:00 مساءً لغاية الساعة 12:00 ليلاً",
-                pharmacies: []
+            const setTodayBtn = document.getElementById('set-today-btn');
+            if (setTodayBtn) setTodayBtn.onclick = setTodayDate;
+
+            const activeShiftBtn = document.getElementById('active-shift-btn');
+            if (activeShiftBtn) {
+                activeShiftBtn.onclick = () => {
+                    filterActiveShiftOnly = !filterActiveShiftOnly;
+                    const badgeStatus = document.getElementById('active-badge-status');
+                    if (filterActiveShiftOnly) {
+                        activeShiftBtn.className = 'shrink-0 bg-emerald-600 text-white border border-emerald-500 px-3.5 py-2.5 rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-2';
+                        badgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-white pulse-badge';
+                    } else {
+                        activeShiftBtn.className = 'shrink-0 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-emerald-500 transition-all flex items-center gap-2';
+                        badgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600';
+                    }
+                    renderPharmacies();
+                };
+            }
+
+            document.querySelectorAll('#region-filters button').forEach(btn => {
+                btn.onclick = () => filterRegion(btn.getAttribute('data-region'));
             });
 
-            // Sort schedule by date descending
-            scheduleData.sort((a, b) => b.date.localeCompare(a.date));
-
-            saveScheduleState();
-            initDateSelector();
-            renderAdminScheduleTab();
-            showToast(`تمت إضافة يوم ${dayNameVal} (${dateVal}) بنجاح.`);
-
-            document.getElementById('add-schedule-date-form').reset();
-        };
-
-        // Auto Day Name Detection on Date Change
-        document.getElementById('new-date-input').onchange = (e) => {
-            if (!e.target.value) return;
-            const d = new Date(e.target.value);
-            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            document.getElementById('new-dayname-input').value = days[d.getDay()];
-        };
-
-        // Add Master Pharmacy Form
-        document.getElementById('add-master-pharmacy-form').onsubmit = (e) => {
-            e.preventDefault();
-            const name = document.getElementById('dir-name-input').value.trim();
-            const region = document.getElementById('dir-region-input').value;
-            const address = document.getElementById('dir-address-input').value.trim();
-            const mapUrl = document.getElementById('dir-map-input').value.trim();
-
-            if (!name || !address) return;
-
-            if (masterPharmacies.some(p => p.name === name)) {
-                showToast("يوجد صيدلية بهذا الاسم في الدليل العام!", "error");
-                return;
+            const shareWhatsAppBtn = document.getElementById('share-website-whatsapp-btn');
+            if (shareWhatsAppBtn) {
+                shareWhatsAppBtn.onclick = () => {
+                    incrementAnalytic('whatsappShares');
+                    const text = `💊 *دليل الصيدليات المناوبة الرسمية*\n(رأس الشغري - الرادار - وادي الشاطر)\n\nتابع جدول الصيدليات المناوبة اليومية عبر الرابط:\nhttps://fifadeeb098765-cell.github.io/-/`;
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+                };
             }
 
-            masterPharmacies.push({ name, region, address, mapUrl });
-            saveMasterPharmaciesState();
-            renderAdminDirectoryTab();
-            renderAdminScheduleTab();
-            showToast(`تمت إضافة (${name}) إلى دليل الصيدليات بنجاح.`);
-
-            document.getElementById('add-master-pharmacy-form').reset();
-        };
-
-        // Reset Analytics
-        document.getElementById('reset-analytics-btn').onclick = () => {
-            showConfirmModal(
-                "تصفير الإحصائيات",
-                "هل أنت متأكد من إعادة ضبط كافة أرقام الإحصائيات إلى الصفر؟",
-                () => {
-                    analyticsData = { pageViews: 0, imageExports: 0, whatsappShares: 0, mapClicks: 0 };
-                    set(analyticsRef, analyticsData);
-                    showToast("تم تصفير جميع الإحصائيات.");
-                }
-            );
-        };
-
-        // Change Admin Password
-        document.getElementById('toggle-new-pass-btn').onclick = () => {
-            const input = document.getElementById('new-password-input');
-            const icon = document.getElementById('new-pass-icon');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fa-solid fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fa-solid fa-eye';
-            }
-        };
-
-        document.getElementById('change-pass-form').onsubmit = (e) => {
-            e.preventDefault();
-            const newPass = document.getElementById('new-password-input').value;
-            const confirmPass = document.getElementById('confirm-password-input').value;
-
-            if (newPass !== confirmPass) {
-                showToast("كلمتا السر غير متطابقتين!", "error");
-                return;
+            const adminMenuBtn = document.getElementById('admin-menu-btn');
+            if (adminMenuBtn) {
+                adminMenuBtn.onclick = () => {
+                    if (isAdminLoggedIn) {
+                        openAdminModal();
+                    } else {
+                        openAuthModal();
+                    }
+                };
             }
 
-            adminPassword = newPass;
-            saveSettingsState();
-            showToast("تم تحديث كلمة السر بنجاح!");
-            document.getElementById('change-pass-form').reset();
-        };
+            const authForm = document.getElementById('auth-form');
+            if (authForm) {
+                authForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const val = document.getElementById('auth-password-input').value;
+                    if (val === adminPassword) {
+                        isAdminLoggedIn = true;
+                        updateAdminBadgePill();
+                        closeAuthModal();
+                        openAdminModal();
+                        showToast("تم تسجيل الدخول بنجاح إلى لوحة التحكم.");
+                    } else {
+                        document.getElementById('auth-error-msg').classList.remove('hidden');
+                    }
+                };
+            }
 
-        // Reset Defaults
-        document.getElementById('reset-defaults-btn').onclick = () => {
-            showConfirmModal(
-                "استعادة البيانات الافتراضية",
-                "سيتم إعادة ضبط جميع بيانات الجدول والدليل إلى الحالات الأساسية الأولية. هل تريد المتابعة؟",
-                () => {
-                    scheduleData = defaultScheduleData;
-                    masterPharmacies = defaultMasterPharmacies;
-                    saveScheduleState();
-                    saveMasterPharmaciesState();
+            const closeAuthBtn = document.getElementById('close-auth-modal-btn');
+            if (closeAuthBtn) closeAuthBtn.onclick = closeAuthModal;
+
+            const toggleAuthPassBtn = document.getElementById('toggle-auth-pass-btn');
+            if (toggleAuthPassBtn) {
+                toggleAuthPassBtn.onclick = () => {
+                    const input = document.getElementById('auth-password-input');
+                    const icon = document.getElementById('auth-pass-toggle-icon');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fa-solid fa-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fa-solid fa-eye';
+                    }
+                };
+            }
+
+            const closeAdminBtn = document.getElementById('close-admin-modal-btn');
+            if (closeAdminBtn) closeAdminBtn.onclick = closeAdminModal;
+
+            document.getElementById('tab-btn-schedule').onclick = () => switchAdminTab('tab-schedule');
+            document.getElementById('tab-btn-directory').onclick = () => switchAdminTab('tab-directory');
+            document.getElementById('tab-btn-analytics').onclick = () => switchAdminTab('tab-analytics');
+            document.getElementById('tab-btn-settings').onclick = () => switchAdminTab('tab-settings');
+
+            const visibleDaysSelect = document.getElementById('visible-days-count-select');
+            if (visibleDaysSelect) {
+                visibleDaysSelect.onchange = (e) => {
+                    visibleDaysLimit = parseInt(e.target.value);
+                    saveSettingsState();
                     initDateSelector();
                     renderPharmacies();
+                    showToast("تم تحديث عدد الأيام المعروضة.");
+                };
+            }
+
+            const addScheduleForm = document.getElementById('add-schedule-date-form');
+            if (addScheduleForm) {
+                const dateInput = document.getElementById('new-date-input');
+                const dayNameInput = document.getElementById('new-dayname-input');
+
+                dateInput.onchange = () => {
+                    if (!dateInput.value) return;
+                    const d = new Date(dateInput.value);
+                    const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                    dayNameInput.value = daysMap[d.getDay()];
+                };
+
+                addScheduleForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const dateVal = dateInput.value;
+                    const dayNameVal = dayNameInput.value;
+
+                    if (scheduleData.some(d => d.date === dateVal)) {
+                        showToast("هذا التاريخ مضاف بالفعل في الجدول!", "error");
+                        return;
+                    }
+
+                    scheduleData.unshift({
+                        date: dateVal,
+                        dayName: dayNameVal,
+                        shiftTime: "من الساعة 8:00 مساءً لغاية الساعة 12:00 ليلاً",
+                        pharmacies: []
+                    });
+
+                    // Sort schedule by date ascending
+                    scheduleData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                    saveScheduleState();
+                    addScheduleForm.reset();
+                    initDateSelector();
                     renderAdminScheduleTab();
+                    showToast(`تمت إضافة التاريخ (${dateVal}) بنجاح.`);
+                };
+            }
+
+            const addMasterForm = document.getElementById('add-master-pharmacy-form');
+            if (addMasterForm) {
+                addMasterForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('dir-name-input').value.trim();
+                    const region = document.getElementById('dir-region-input').value;
+                    const address = document.getElementById('dir-address-input').value.trim();
+                    const mapUrl = document.getElementById('dir-map-input').value.trim();
+
+                    if (masterPharmacies.some(p => p.name === name)) {
+                        showToast("هذه الصيدلية مسجلة مسبقاً في الدليل العام!", "error");
+                        return;
+                    }
+
+                    masterPharmacies.push({ name, region, address, mapUrl });
+                    saveMasterPharmaciesState();
+                    addMasterForm.reset();
                     renderAdminDirectoryTab();
-                    showToast("تمت استعادة البيانات الافتراضية بنجاح.");
+                    showToast(`تمت إضافة صيدلية (${name}) بنجاح.`);
+                };
+            }
+
+            const changePassForm = document.getElementById('change-pass-form');
+            if (changePassForm) {
+                changePassForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    const newPass = document.getElementById('new-password-input').value;
+                    const confirmPass = document.getElementById('confirm-password-input').value;
+
+                    if (newPass !== confirmPass) {
+                        showToast("كلمتا السر غير متطابقتين!", "error");
+                        return;
+                    }
+
+                    adminPassword = newPass;
+                    saveSettingsState();
+                    changePassForm.reset();
+                    showToast("تم تحديث كلمة سر المسؤول بنجاح.");
+                };
+            }
+
+            const resetDefaultsBtn = document.getElementById('reset-defaults-btn');
+            if (resetDefaultsBtn) {
+                resetDefaultsBtn.onclick = () => {
+                    showConfirmModal(
+                        "استعادة البيانات الافتراضية",
+                        "هل أنت متأكد من استعادة الجدول الأساسي الافتراضي؟ سيتم استبدال التعديلات الحالية.",
+                        () => {
+                            scheduleData = defaultScheduleData;
+                            masterPharmacies = defaultMasterPharmacies;
+                            saveScheduleState();
+                            saveMasterPharmaciesState();
+                            initDateSelector();
+                            renderPharmacies();
+                            renderAdminScheduleTab();
+                            renderAdminDirectoryTab();
+                            showToast("تمت استعادة البيانات الافتراضية بنجاح.");
+                        }
+                    );
+                };
+            }
+
+            const resetAnalyticsBtn = document.getElementById('reset-analytics-btn');
+            if (resetAnalyticsBtn) {
+                resetAnalyticsBtn.onclick = () => {
+                    showConfirmModal(
+                        "تصفير الإحصائيات",
+                        "هل تريد حقاً تصفير جميع عدادات الإحصائيات الحالية؟",
+                        () => {
+                            analyticsData = { pageViews: 0, imageExports: 0, whatsappShares: 0, mapClicks: 0 };
+                            set(analyticsRef, analyticsData);
+                            updateAnalyticsUI();
+                            showToast("تم تصفير الإحصائيات بنجاح.");
+                        }
+                    );
+                };
+            }
+
+            const openFbModalBtn = document.getElementById('open-fb-modal-btn');
+            if (openFbModalBtn) openFbModalBtn.onclick = openFacebookModal;
+
+            const closeFbModalBtn = document.getElementById('close-fb-modal-btn');
+            const cancelFbModalBtn = document.getElementById('cancel-fb-modal-btn');
+            const fbModal = document.getElementById('facebook-modal');
+
+            const closeFbModal = () => fbModal.classList.add('hidden');
+            if (closeFbModalBtn) closeFbModalBtn.onclick = closeFbModal;
+            if (cancelFbModalBtn) cancelFbModalBtn.onclick = closeFbModal;
+
+            document.getElementById('theme-btn-dark').onclick = () => updateCardTheme('dark');
+            document.getElementById('theme-btn-emerald').onclick = () => updateCardTheme('emerald');
+
+            const downloadImgBtn = document.getElementById('download-img-btn');
+            if (downloadImgBtn) downloadImgBtn.onclick = downloadFacebookCard;
+
+            const toggleDarkBtn = document.getElementById('toggle-dark-btn');
+            const themeIcon = document.getElementById('theme-icon');
+            if (toggleDarkBtn) {
+                if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                    themeIcon.className = 'fa-solid fa-sun text-base';
                 }
-            );
-        };
 
-        // Facebook Export Modal Trigger
-        document.getElementById('open-fb-modal-btn').onclick = openFacebookModal;
-        document.getElementById('close-fb-modal-btn').onclick = () => document.getElementById('facebook-modal').classList.add('hidden');
-        document.getElementById('cancel-fb-modal-btn').onclick = () => document.getElementById('facebook-modal').classList.add('hidden');
+                toggleDarkBtn.onclick = () => {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                        themeIcon.className = 'fa-solid fa-moon text-base';
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                        themeIcon.className = 'fa-solid fa-sun text-base';
+                    }
+                };
+            }
 
-        document.getElementById('theme-btn-dark').onclick = () => updateCardTheme('dark');
-        document.getElementById('theme-btn-emerald').onclick = () => updateCardTheme('emerald');
-        document.getElementById('download-img-btn').onclick = downloadFacebookCard;
-
-        // Share Website via WhatsApp
-        document.getElementById('share-website-whatsapp-btn').onclick = () => {
-            incrementAnalytic('whatsappShares');
-            const shareText = `🏥 *دليل الصيدليات المناوبة الرسمي* (رأس الشغري - الرادار - وادي الشاطر)\n\nتعرف على الصيدليات المناوبة لليوم وللأيام القادمة مع أوقات عملها والعناوين والخرائط مباشرة من هنا:\nhttps://fifadeeb098765-cell.github.io/-/`;
-            const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-            window.open(shareUrl, '_blank');
-        };
+            // Realtime clock update
+            setInterval(() => {
+                const now = new Date();
+                const clockEl = document.getElementById('current-clock-display');
+                if (clockEl) {
+                    clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+                }
+            }, 1000);
+        });
     </script>
 </body>
 </html>
