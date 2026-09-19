@@ -127,13 +127,6 @@
             
             <!-- Quick Tools & Metrics -->
             <div class="flex flex-wrap items-center gap-2.5">
-                <!-- زر تثبيت التطبيق أو اختصار الرابط -->
-                <button id="install-app-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all flex items-center gap-2 border border-amber-400 focus:ring-2 focus:ring-amber-300">
-                    <i class="fa-solid fa-download text-base"></i>
-                    <span class="hidden md:inline">تثبيت التطبيق</span>
-                    <span class="md:hidden">تثبيت</span>
-                </button>
-
                 <button id="share-website-whatsapp-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-black shadow-lg hover:shadow-xl transition-all flex items-center gap-2 border border-emerald-400 focus:ring-2 focus:ring-emerald-300">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
                     <span class="hidden md:inline">مشاركة الموقع عبر الواتساب</span>
@@ -639,7 +632,7 @@
         </div>
     </footer>
 
-    <!-- Firebase & App Logic Script Setup -->
+    <!-- Firebase Script Setup -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
@@ -657,15 +650,18 @@
           measurementId: "G-07MK7QN364"
         };
 
+        // Initialize Firebase & Realtime Database
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db = getDatabase(app);
 
+        // References to DB paths
         const scheduleRef = ref(db, 'scheduleData');
         const masterRef = ref(db, 'masterPharmacies');
         const settingsRef = ref(db, 'settings');
         const analyticsRef = ref(db, 'analytics');
 
+        // Helper to get today formatted date
         function getTodayFormattedDate() {
             const d = new Date();
             const year = d.getFullYear();
@@ -839,6 +835,7 @@
             { name: "صيدلية ميس", region: "رأس الشغري", address: "رأس الشغري - جنوب مدرسة الابتدائي جانب مكتبة الأمير", mapUrl: "" }
         ];
 
+        // State Variables
         let scheduleData = [];
         let masterPharmacies = [];
         let adminPassword = '135792468';
@@ -857,8 +854,8 @@
         let favoritePharmacies = JSON.parse(localStorage.getItem('fav_pharmacies') || '[]');
         let currentCardTheme = 'dark';
         let isAdminLoggedIn = false;
-        let deferredPrompt = null; // متغير لحفظ حدث التثبيت (PWA)
 
+        // Sync Realtime Data from Firebase
         onValue(scheduleRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -897,6 +894,7 @@
             }
         });
 
+        // Sync Analytics from Firebase
         onValue(analyticsRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -934,6 +932,18 @@
             if (mapsEl) mapsEl.textContent = analyticsData.mapClicks.toLocaleString('ar-EG');
         }
 
+        function saveScheduleState() {
+            set(scheduleRef, scheduleData);
+        }
+
+        function saveMasterPharmaciesState() {
+            set(masterRef, masterPharmacies);
+        }
+
+        function saveSettingsState() {
+            set(settingsRef, { adminPassword, visibleDaysLimit });
+        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -963,44 +973,88 @@
             }, 3500);
         }
 
-        // معالجة زر تثبيت التطبيق / إنشاء اختصار على سطح المكتب
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
+        function showConfirmModal(title, desc, onConfirm) {
+            const modal = document.getElementById('confirm-modal');
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-desc').textContent = desc;
+            
+            const okBtn = document.getElementById('confirm-ok-btn');
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
 
-        document.getElementById('install-app-btn').onclick = async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    showToast('تم تثبيت التطبيق بنجاح!');
-                }
-                deferredPrompt = null;
+            const cleanup = () => {
+                modal.classList.add('hidden');
+                okBtn.onclick = null;
+                cancelBtn.onclick = null;
+            };
+
+            okBtn.onclick = () => {
+                cleanup();
+                onConfirm();
+            };
+
+            cancelBtn.onclick = cleanup;
+            modal.classList.remove('hidden');
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-error-msg').classList.add('hidden');
+            document.getElementById('auth-password-input').value = '';
+            document.getElementById('auth-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('auth-password-input').focus(), 100);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function updateAdminBadgePill() {
+            const pill = document.getElementById('admin-status-pill');
+            const badgeIcon = document.getElementById('admin-badge-icon');
+            if (isAdminLoggedIn) {
+                if (pill) pill.classList.remove('hidden');
+                if (badgeIcon) badgeIcon.classList.remove('hidden');
             } else {
-                // إذا لم يكن متصفح يدعم التثبيت المباشر، إرشادات لإنشاء اختصار لسطح المكتب
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                if (isIOS) {
-                    alert('لإضافة التطبيق إلى الشاشة الرئيسية:\nاضغط على زر المشاركة في متصفح سفاري (Share)، ثم اختر "إضافة إلى الشاشة الرئيسية" (Add to Home Screen).');
-                } else {
-                    // لمح المتصفحات الأخرى أو الأجهزة المكتبية (إنشاء اختصار أو استخدام قائمة المتصفح)
-                    try {
-                        if (navigator.share) {
-                            navigator.share({
-                                title: 'دليل الصيدليات المناوبة',
-                                url: window.location.href
-                            });
-                        } else {
-                            // نسخ الرابط كبديل
-                            navigator.clipboard.writeText(window.location.href);
-                            showToast('تم نسخ رابط الموقع! يمكنك لصقه في المتصفح أو حفظه كمفضلة.');
-                        }
-                    } catch (err) {
-                        showToast('لاستعراض التطبيق كاختصار، اضغط (Ctrl + D) لحفظه في المفضلة.', 'success');
-                    }
-                }
+                if (pill) pill.classList.add('hidden');
+                if (badgeIcon) badgeIcon.classList.add('hidden');
             }
-        };
+        }
+
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+            document.getElementById('visible-days-count-select').value = visibleDaysLimit;
+            renderAdminScheduleTab();
+            renderAdminDirectoryTab();
+            updateAnalyticsUI();
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function switchAdminTab(tabId) {
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.className = 'admin-tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 shrink-0 flex items-center gap-2';
+            });
+
+            document.getElementById('tab-schedule').classList.add('hidden');
+            document.getElementById('tab-directory').classList.add('hidden');
+            document.getElementById('tab-analytics').classList.add('hidden');
+            document.getElementById('tab-settings').classList.add('hidden');
+
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            const activeBtnMap = {
+                'tab-schedule': 'tab-btn-schedule',
+                'tab-directory': 'tab-btn-directory',
+                'tab-analytics': 'tab-btn-analytics',
+                'tab-settings': 'tab-btn-settings'
+            };
+
+            const activeBtn = document.getElementById(activeBtnMap[tabId]);
+            if (activeBtn) {
+                activeBtn.className = 'admin-tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-emerald-600 text-white shrink-0 flex items-center gap-2';
+            }
+        }
 
         function getVisibleScheduleData() {
             return scheduleData.slice(0, visibleDaysLimit);
@@ -1211,39 +1265,644 @@
             });
         }
 
-        // أزرار الفلترة والتاريخ
+        function renderAdminScheduleTab() {
+            const container = document.getElementById('admin-schedule-list');
+            document.getElementById('schedule-days-count').textContent = `(${scheduleData.length} يوم/أيام)`;
+
+            if (scheduleData.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">لا توجد أي أيام مضافة حالياً في الجدول.</p>`;
+                return;
+            }
+
+            container.innerHTML = scheduleData.map(day => {
+                const dayPharmacies = day.pharmacies || [];
+                const availableToSelect = masterPharmacies.filter(mp => !dayPharmacies.some(dp => dp.name === mp.name));
+
+                return `
+                    <div class="bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-4 border border-slate-200 dark:border-slate-700/80 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">${day.dayName}</span>
+                                <span class="text-xs font-bold text-slate-500 font-mono bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-md">${day.date}</span>
+                            </div>
+                            <button data-remove-date="${day.date}" class="remove-date-btn text-xs text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> حذف هذا اليوم
+                            </button>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1">وقت/نص المناوبة لهذا اليوم:</label>
+                            <input type="text" value="${day.shiftTime || ''}" data-shift-date="${day.date}" class="shift-time-input w-full px-3 py-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl text-xs font-semibold text-slate-800 dark:text-slate-100">
+                        </div>
+
+                        <div>
+                            <span class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-2">الصيدليات المناوبة فيه:</span>
+                            <div class="space-y-2">
+                                ${dayPharmacies.length > 0 ? dayPharmacies.map(p => `
+                                    <div class="flex items-center justify-between bg-white dark:bg-slate-700/70 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-600 text-xs">
+                                        <div>
+                                            <span class="font-bold text-slate-800 dark:text-slate-100">${p.name}</span>
+                                            <span class="text-[10px] text-emerald-600 dark:text-emerald-400 mr-2">(${p.region})</span>
+                                        </div>
+                                        <button data-remove-pharm="${p.name}" data-date="${day.date}" class="remove-pharm-from-date-btn text-slate-400 hover:text-rose-500 p-1">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                `).join('') : `<p class="text-xs text-slate-400 italic">لم يتم تعيين أي صيدلية مناوبة لهذا اليوم بعد.</p>`}
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
+                            <label class="block text-[11px] font-bold text-slate-600 dark:text-slate-300">بحث واختيار صيدلية لإضافتها لهذا اليوم:</label>
+                            <div class="flex flex-col sm:flex-row items-center gap-2">
+                                <div class="relative w-full">
+                                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400 text-xs">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </span>
+                                    <input type="text" id="search-pharmacy-select-${day.date}" data-search-date="${day.date}" placeholder="اكتب اسم الصيدلية أو المنطقة..." class="search-select-input w-full pr-8 pl-3 py-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl text-xs font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div class="flex items-center gap-2 w-full sm:w-auto shrink-0">
+                                    <select id="add-pharmacy-select-${day.date}" class="w-full sm:w-56 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">-- اختر صيدلية من الدليل --</option>
+                                        ${availableToSelect.map(mp => `<option value="${mp.name}">${mp.name} (${mp.region})</option>`).join('')}
+                                    </select>
+                                    <button data-add-to-date="${day.date}" class="add-to-date-btn shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1 shadow-sm">
+                                        <i class="fa-solid fa-plus"></i> إضافة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.querySelectorAll('.remove-date-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const dateStr = btn.getAttribute('data-remove-date');
+                    showConfirmModal(
+                        "حذف اليوم من الجدول",
+                        `هل أنت متأكد من حذف تاريخ (${dateStr}) بالكامل من جدولة المناوبة؟`,
+                        () => {
+                            scheduleData = scheduleData.filter(d => d.date !== dateStr);
+                            saveScheduleState();
+                            showToast(`تم حذف التاريخ (${dateStr}) من الجدول.`);
+                        }
+                    );
+                };
+            });
+
+            container.querySelectorAll('.shift-time-input').forEach(input => {
+                input.onchange = () => {
+                    const dateStr = input.getAttribute('data-shift-date');
+                    const dayObj = scheduleData.find(d => d.date === dateStr);
+                    if (dayObj) {
+                        dayObj.shiftTime = input.value;
+                        saveScheduleState();
+                    }
+                };
+            });
+
+            container.querySelectorAll('.remove-pharm-from-date-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const dateStr = btn.getAttribute('data-date');
+                    const pharmName = btn.getAttribute('data-remove-pharm');
+                    const dayObj = scheduleData.find(d => d.date === dateStr);
+                    if (dayObj) {
+                        dayObj.pharmacies = dayObj.pharmacies.filter(p => p.name !== pharmName);
+                        saveScheduleState();
+                        showToast(`تمت إزالة ${pharmName} من يوم ${dayObj.dayName}`);
+                    }
+                };
+            });
+
+            container.querySelectorAll('.search-select-input').forEach(input => {
+                input.oninput = () => {
+                    const dateStr = input.getAttribute('data-search-date');
+                    const select = document.getElementById(`add-pharmacy-select-${dateStr}`);
+                    const query = input.value.trim().toLowerCase();
+                    const dayObj = scheduleData.find(d => d.date === dateStr);
+                    if (!dayObj || !select) return;
+
+                    const dayPharmacies = dayObj.pharmacies || [];
+                    const availableToSelect = masterPharmacies.filter(mp => 
+                        !dayPharmacies.some(dp => dp.name === mp.name) &&
+                        (mp.name.toLowerCase().includes(query) || mp.region.toLowerCase().includes(query) || mp.address.toLowerCase().includes(query))
+                    );
+
+                    select.innerHTML = `<option value="">-- ${availableToSelect.length > 0 ? 'اختر صيدلية من الدليل' : 'لا توجد نتائج مطابقة'} --</option>` +
+                        availableToSelect.map(mp => `<option value="${mp.name}">${mp.name} (${mp.region})</option>`).join('');
+                };
+            });
+
+            container.querySelectorAll('.add-to-date-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const dateStr = btn.getAttribute('data-add-to-date');
+                    const selectEl = document.getElementById(`add-pharmacy-select-${dateStr}`);
+                    const selectedName = selectEl.value;
+                    if (!selectedName) return;
+
+                    const dayObj = scheduleData.find(d => d.date === dateStr);
+                    if (!dayObj) return;
+
+                    if (!dayObj.pharmacies) dayObj.pharmacies = [];
+
+                    const masterItem = masterPharmacies.find(p => p.name === selectedName);
+                    if (!masterItem) return;
+
+                    const alreadyAdded = dayObj.pharmacies.some(p => p.name === selectedName);
+                    if (alreadyAdded) {
+                        showToast("هذه الصيدلية مضافة بالفعل لهذا اليوم!", "error");
+                        return;
+                    }
+
+                    dayObj.pharmacies.push({
+                        name: masterItem.name,
+                        region: masterItem.region,
+                        address: masterItem.address,
+                        mapUrl: masterItem.mapUrl || ""
+                    });
+
+                    saveScheduleState();
+                    showToast(`تمت إضافة ${masterItem.name} إلى يوم ${dayObj.dayName}`);
+                };
+            });
+        }
+
+        function renderAdminDirectoryTab() {
+            const container = document.getElementById('master-pharmacies-list');
+            document.getElementById('master-pharmacies-count').textContent = `${masterPharmacies.length} صيدلية`;
+
+            if (masterPharmacies.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-2">لا توجد صيدليات بالدليل العام.</p>`;
+                return;
+            }
+
+            container.innerHTML = masterPharmacies.map(p => `
+                <div class="bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="font-black text-slate-900 dark:text-slate-100 text-sm">${p.name}</span>
+                        <span class="bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 font-bold px-2 py-0.5 rounded-md text-[10px]">${p.region}</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-300 leading-snug">${p.address}</p>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-slate-700/60">
+                        ${p.mapUrl ? `<a href="${p.mapUrl}" target="_blank" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline flex items-center gap-1"><i class="fa-solid fa-map-location-dot"></i> الخريطة</a>` : '<span class="text-slate-400 italic">بدون خريطة</span>'}
+                        <button data-delete-master="${p.name}" class="delete-master-btn text-rose-500 hover:text-rose-700 font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> حذف
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.querySelectorAll('.delete-master-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const name = btn.getAttribute('data-delete-master');
+                    showConfirmModal(
+                        "حذف الصيدلية من الدليل",
+                        `هل أنت متأكد من حذف (${name}) من الدليل العام نهائياً؟`,
+                        () => {
+                            masterPharmacies = masterPharmacies.filter(mp => mp.name !== name);
+                            saveMasterPharmaciesState();
+                            showToast(`تم حذف (${name}) من الدليل.`);
+                        }
+                    );
+                };
+            });
+        }
+
+        /* Optimized Facebook Modal Generation: Lens name directly next to region, and dynamic sizing for 4 pharmacies overflow fix */
+        function openFacebookModal() {
+            const dateObj = scheduleData.find(d => d.date === selectedDate);
+            if (!dateObj) {
+                showToast("يرجى تحديد تاريخ صحيح أولاً!", "error");
+                return;
+            }
+
+            document.getElementById('fb-card-day-title').textContent = dateObj.dayName;
+            document.getElementById('fb-card-date-title').textContent = dateObj.date;
+
+            const container = document.getElementById('fb-pharmacies-list');
+            const pharmacies = dateObj.pharmacies || [];
+            const count = pharmacies.length;
+
+            if (count === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-400 font-bold text-xl">لا توجد صيدليات مناوبة مسجلة في هذا اليوم.</div>`;
+            } else {
+                // Dynamic styling & Layout depending on count to guarantee no overflow when 4 pharmacies!
+                let listContainerClass = "flex flex-col gap-4";
+                let cardPadding = "p-5";
+                let titleSize = "text-2xl font-black";
+                let addressPadding = "p-3 mb-2 text-sm";
+                let shiftPadding = "p-3 text-xs";
+                let badgeSize = "text-sm px-3.5 py-1";
+                let fbBadgeSize = "text-xs px-2.5 py-1";
+
+                if (count >= 4) {
+                    // 2x2 Grid for 4 or more pharmacies ensuring zero overflow inside 1080x1080 canvas
+                    listContainerClass = "grid grid-cols-2 gap-3.5";
+                    cardPadding = "p-4";
+                    titleSize = "text-xl font-black";
+                    addressPadding = "p-2.5 mb-2 text-xs";
+                    shiftPadding = "p-2 text-xs";
+                    badgeSize = "text-xs px-2.5 py-1";
+                    fbBadgeSize = "text-[11px] px-2 py-0.5";
+                } else if (count === 3) {
+                    listContainerClass = "flex flex-col gap-3";
+                    cardPadding = "p-4";
+                    titleSize = "text-xl font-black";
+                    addressPadding = "p-2.5 mb-2 text-xs sm:text-sm";
+                    shiftPadding = "p-2.5 text-xs";
+                    badgeSize = "text-xs px-3 py-1";
+                    fbBadgeSize = "text-xs px-2.5 py-1";
+                } else {
+                    // 1 or 2 pharmacies
+                    listContainerClass = "flex flex-col gap-5";
+                    cardPadding = "p-6";
+                    titleSize = "text-3xl font-black";
+                    addressPadding = "p-4 mb-3 text-base";
+                    shiftPadding = "p-3.5 text-sm";
+                    badgeSize = "text-base px-4 py-1.5";
+                    fbBadgeSize = "text-sm px-3 py-1";
+                }
+
+                container.className = listContainerClass;
+
+                container.innerHTML = pharmacies.map(p => {
+                    const shiftPeriodText = p.shiftPeriod ? p.shiftPeriod : dateObj.shiftTime;
+
+                    return `
+                    <div class="bg-slate-800/70 border border-slate-700/80 rounded-2xl ${cardPadding} shadow-lg flex flex-col justify-between">
+                        <div>
+                            <!-- اسم المنطقة وبجانبها مباشرة كلمة عدسة وادي الشاطر ( عبدالحميد ديب ) -->
+                            <div class="flex items-center flex-wrap gap-2 mb-2">
+                                <div class="bg-emerald-500/20 text-emerald-300 font-black ${badgeSize} rounded-full border border-emerald-500/30 flex items-center gap-1.5 shrink-0">
+                                    <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                                    <span>${p.region}</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-sky-400 font-bold ${fbBadgeSize} bg-sky-950/50 rounded-full border border-sky-800/50 shrink-0">
+                                    <i class="fa-brands fa-facebook text-sky-400"></i>
+                                    <span>عدسة وادي الشاطر ( عبدالحميد ديب )</span>
+                                </div>
+                            </div>
+
+                            <!-- اسم الصيدلية -->
+                            <h3 class="${titleSize} text-white mb-2 flex items-center gap-2.5">
+                                <i class="fa-solid fa-prescription-bottle-medical text-emerald-400 shrink-0"></i>
+                                <span>${p.name}</span>
+                            </h3>
+
+                            <!-- العنوان -->
+                            <p class="${addressPadding} text-slate-300 leading-snug flex items-start gap-2 bg-slate-900/60 rounded-xl border border-slate-800/80">
+                                <i class="fa-solid fa-map-pin text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span>${p.address}</span>
+                            </p>
+                        </div>
+
+                        <!-- أوقات المناوبة للصيدلية -->
+                        <div class="bg-emerald-950/50 border border-emerald-800/60 rounded-xl ${shiftPadding} flex items-center gap-2 text-emerald-200 font-bold">
+                            <i class="fa-regular fa-clock text-emerald-400 shrink-0"></i>
+                            <span>أوقات المناوبة: ${shiftPeriodText}</span>
+                        </div>
+                    </div>
+                `;
+                }).join('');
+            }
+
+            const modal = document.getElementById('facebook-modal');
+            modal.classList.remove('hidden');
+            
+            setTimeout(scaleFacebookPreview, 50);
+        }
+
+        function scaleFacebookPreview() {
+            const wrapper = document.getElementById('fb-wrapper');
+            const card = document.getElementById('facebook-export-card');
+            if (!wrapper || !card) return;
+
+            const scale = wrapper.clientWidth / 1080;
+            card.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener('resize', scaleFacebookPreview);
+
+        function updateCardTheme(theme) {
+            currentCardTheme = theme;
+            const card = document.getElementById('facebook-export-card');
+            const darkBtn = document.getElementById('theme-btn-dark');
+            const emeraldBtn = document.getElementById('theme-btn-emerald');
+
+            if (theme === 'dark') {
+                card.className = "bg-slate-900 text-white p-8 sm:p-10 flex flex-col justify-between transition-colors duration-300";
+                darkBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-900 text-white border border-slate-700";
+                emeraldBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200";
+            } else {
+                card.className = "bg-emerald-950 text-white p-8 sm:p-10 flex flex-col justify-between transition-colors duration-300";
+                emeraldBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-emerald-600 text-white border border-emerald-500";
+                darkBtn.className = "px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200";
+            }
+        }
+
+        function downloadFacebookCard() {
+            const card = document.getElementById('facebook-export-card');
+            const downloadBtn = document.getElementById('download-img-btn');
+
+            downloadBtn.disabled = true;
+            downloadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-base"></i> <span>جاري توليد الصورة...</span>`;
+
+            const currentTransform = card.style.transform;
+            card.style.transform = 'none';
+
+            html2canvas(card, {
+                width: 1080,
+                height: 1080,
+                scale: 1,
+                useCORS: true,
+                backgroundColor: null,
+                logging: false
+            }).then(canvas => {
+                card.style.transform = currentTransform;
+
+                const link = document.createElement('a');
+                link.download = `صيدليات_المناوبة_${selectedDate}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                incrementAnalytic('imageExports');
+
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = `<i class="fa-solid fa-download text-base"></i> <span>تحميل الصورة عالية الدقة (PNG)</span>`;
+                showToast("تم تحميل الصورة بنجاح!");
+            }).catch(err => {
+                card.style.transform = currentTransform;
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = `<i class="fa-solid fa-download text-base"></i> <span>تحميل الصورة عالية الدقة (PNG)</span>`;
+                showToast("حدث خطأ أثناء استخراج الصورة!", "error");
+            });
+        }
+
+        // Live Clock Setup
+        function updateClock() {
+            const clockEl = document.getElementById('current-clock-display');
+            if (!clockEl) return;
+            const now = new Date();
+            clockEl.textContent = now.toLocaleTimeString('ar-EG', { hour12: true });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Dark Mode Logic
+        const toggleDarkBtn = document.getElementById('toggle-dark-btn');
+        const themeIcon = document.getElementById('theme-icon');
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeIcon.className = 'fa-solid fa-sun text-amber-300';
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeIcon.className = 'fa-solid fa-moon text-base';
+        }
+
+        toggleDarkBtn.onclick = () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon text-base';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun text-amber-300';
+            }
+        };
+
+        // Event Listeners Initialization
         document.getElementById('date-selector').onchange = (e) => {
             selectedDate = e.target.value;
             renderPharmacies();
         };
 
-        document.getElementById('set-today-btn').onclick = () => {
-            setTodayDate();
+        document.getElementById('set-today-btn').onclick = () => setTodayDate();
+
+        const activeShiftBtn = document.getElementById('active-shift-btn');
+        const activeBadgeStatus = document.getElementById('active-badge-status');
+
+        activeShiftBtn.onclick = () => {
+            filterActiveShiftOnly = !filterActiveShiftOnly;
+            if (filterActiveShiftOnly) {
+                activeShiftBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+                activeBadgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-badge';
+            } else {
+                activeShiftBtn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+                activeBadgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600';
+            }
+            renderPharmacies();
         };
 
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.onclick = () => {
-                filterRegion(btn.getAttribute('data-region'));
-            };
+            btn.onclick = () => filterRegion(btn.getAttribute('data-region'));
         });
 
-        // تشغيل الساعة الحية في الهيدر
-        setInterval(() => {
-            const now = new Date();
-            const clockEl = document.getElementById('current-clock-display');
-            if (clockEl) {
-                clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: false });
-            }
-        }, 1000);
+        document.getElementById('reset-filters-btn').onclick = () => {
+            selectedRegion = 'all';
+            filterActiveShiftOnly = false;
+            activeShiftBtn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40');
+            activeBadgeStatus.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600';
+            filterRegion('all');
+        };
 
-        // تبديل المظهر الليلي
-        document.getElementById('toggle-dark-btn').onclick = () => {
-            const html = document.documentElement;
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            const icon = document.getElementById('theme-icon');
-            icon.className = isDark ? 'fa-solid fa-sun text-base text-amber-300' : 'fa-solid fa-moon text-base';
+        // Admin Auth & Menu Modal Events
+        document.getElementById('admin-menu-btn').onclick = () => {
+            if (isAdminLoggedIn) {
+                openAdminModal();
+            } else {
+                openAuthModal();
+            }
+        };
+
+        document.getElementById('close-auth-modal-btn').onclick = closeAuthModal;
+
+        document.getElementById('toggle-auth-pass-btn').onclick = () => {
+            const input = document.getElementById('auth-password-input');
+            const icon = document.getElementById('auth-pass-toggle-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        };
+
+        document.getElementById('auth-form').onsubmit = (e) => {
+            e.preventDefault();
+            const passVal = document.getElementById('auth-password-input').value;
+            if (passVal === adminPassword) {
+                isAdminLoggedIn = true;
+                closeAuthModal();
+                updateAdminBadgePill();
+                openAdminModal();
+                showToast('تم تسجيل الدخول بنجاح كمسؤول!');
+            } else {
+                document.getElementById('auth-error-msg').classList.remove('hidden');
+            }
+        };
+
+        // Admin Modal Navigation Tabs
+        document.getElementById('close-admin-modal-btn').onclick = closeAdminModal;
+        document.getElementById('tab-btn-schedule').onclick = () => switchAdminTab('tab-schedule');
+        document.getElementById('tab-btn-directory').onclick = () => switchAdminTab('tab-directory');
+        document.getElementById('tab-btn-analytics').onclick = () => switchAdminTab('tab-analytics');
+        document.getElementById('tab-btn-settings').onclick = () => switchAdminTab('tab-settings');
+
+        // Visible Days Limit Change
+        document.getElementById('visible-days-count-select').onchange = (e) => {
+            visibleDaysLimit = parseInt(e.target.value, 10);
+            saveSettingsState();
+            initDateSelector();
+            renderPharmacies();
+            showToast(`تم تغيير عدد الأيام المعروضة إلى ${visibleDaysLimit} يوم.`);
+        };
+
+        // Add Schedule Date Form
+        document.getElementById('add-schedule-date-form').onsubmit = (e) => {
+            e.preventDefault();
+            const dateVal = document.getElementById('new-date-input').value;
+            const dayNameVal = document.getElementById('new-dayname-input').value.trim();
+
+            if (!dateVal || !dayNameVal) return;
+
+            if (scheduleData.some(d => d.date === dateVal)) {
+                showToast("هذا التاريخ مضاف بالفعل بالجدول!", "error");
+                return;
+            }
+
+            scheduleData.unshift({
+                date: dateVal,
+                dayName: dayNameVal,
+                shiftTime: "من الساعة 8:00 مساءً لغاية الساعة 12:00 ليلاً",
+                pharmacies: []
+            });
+
+            // Sort schedule by date descending
+            scheduleData.sort((a, b) => b.date.localeCompare(a.date));
+
+            saveScheduleState();
+            initDateSelector();
+            renderAdminScheduleTab();
+            showToast(`تمت إضافة يوم ${dayNameVal} (${dateVal}) بنجاح.`);
+
+            document.getElementById('add-schedule-date-form').reset();
+        };
+
+        // Auto Day Name Detection on Date Change
+        document.getElementById('new-date-input').onchange = (e) => {
+            if (!e.target.value) return;
+            const d = new Date(e.target.value);
+            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            document.getElementById('new-dayname-input').value = days[d.getDay()];
+        };
+
+        // Add Master Pharmacy Form
+        document.getElementById('add-master-pharmacy-form').onsubmit = (e) => {
+            e.preventDefault();
+            const name = document.getElementById('dir-name-input').value.trim();
+            const region = document.getElementById('dir-region-input').value;
+            const address = document.getElementById('dir-address-input').value.trim();
+            const mapUrl = document.getElementById('dir-map-input').value.trim();
+
+            if (!name || !address) return;
+
+            if (masterPharmacies.some(p => p.name === name)) {
+                showToast("يوجد صيدلية بهذا الاسم في الدليل العام!", "error");
+                return;
+            }
+
+            masterPharmacies.push({ name, region, address, mapUrl });
+            saveMasterPharmaciesState();
+            renderAdminDirectoryTab();
+            renderAdminScheduleTab();
+            showToast(`تمت إضافة (${name}) إلى دليل الصيدليات بنجاح.`);
+
+            document.getElementById('add-master-pharmacy-form').reset();
+        };
+
+        // Reset Analytics
+        document.getElementById('reset-analytics-btn').onclick = () => {
+            showConfirmModal(
+                "تصفير الإحصائيات",
+                "هل أنت متأكد من إعادة ضبط كافة أرقام الإحصائيات إلى الصفر؟",
+                () => {
+                    analyticsData = { pageViews: 0, imageExports: 0, whatsappShares: 0, mapClicks: 0 };
+                    set(analyticsRef, analyticsData);
+                    showToast("تم تصفير جميع الإحصائيات.");
+                }
+            );
+        };
+
+        // Change Admin Password
+        document.getElementById('toggle-new-pass-btn').onclick = () => {
+            const input = document.getElementById('new-password-input');
+            const icon = document.getElementById('new-pass-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        };
+
+        document.getElementById('change-pass-form').onsubmit = (e) => {
+            e.preventDefault();
+            const newPass = document.getElementById('new-password-input').value;
+            const confirmPass = document.getElementById('confirm-password-input').value;
+
+            if (newPass !== confirmPass) {
+                showToast("كلمتا السر غير متطابقتين!", "error");
+                return;
+            }
+
+            adminPassword = newPass;
+            saveSettingsState();
+            showToast("تم تحديث كلمة السر بنجاح!");
+            document.getElementById('change-pass-form').reset();
+        };
+
+        // Reset Defaults
+        document.getElementById('reset-defaults-btn').onclick = () => {
+            showConfirmModal(
+                "استعادة البيانات الافتراضية",
+                "سيتم إعادة ضبط جميع بيانات الجدول والدليل إلى الحالات الأساسية الأولية. هل تريد المتابعة؟",
+                () => {
+                    scheduleData = defaultScheduleData;
+                    masterPharmacies = defaultMasterPharmacies;
+                    saveScheduleState();
+                    saveMasterPharmaciesState();
+                    initDateSelector();
+                    renderPharmacies();
+                    renderAdminScheduleTab();
+                    renderAdminDirectoryTab();
+                    showToast("تمت استعادة البيانات الافتراضية بنجاح.");
+                }
+            );
+        };
+
+        // Facebook Export Modal Trigger
+        document.getElementById('open-fb-modal-btn').onclick = openFacebookModal;
+        document.getElementById('close-fb-modal-btn').onclick = () => document.getElementById('facebook-modal').classList.add('hidden');
+        document.getElementById('cancel-fb-modal-btn').onclick = () => document.getElementById('facebook-modal').classList.add('hidden');
+
+        document.getElementById('theme-btn-dark').onclick = () => updateCardTheme('dark');
+        document.getElementById('theme-btn-emerald').onclick = () => updateCardTheme('emerald');
+        document.getElementById('download-img-btn').onclick = downloadFacebookCard;
+
+        // Share Website via WhatsApp
+        document.getElementById('share-website-whatsapp-btn').onclick = () => {
+            incrementAnalytic('whatsappShares');
+            const shareText = `🏥 *دليل الصيدليات المناوبة الرسمي* (رأس الشغري - الرادار - وادي الشاطر)\n\nتعرف على الصيدليات المناوبة لليوم وللأيام القادمة مع أوقات عملها والعناوين والخرائط مباشرة من هنا:\nhttps://fifadeeb098765-cell.github.io/-/`;
+            const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+            window.open(shareUrl, '_blank');
         };
     </script>
 </body>
 </html>
+
+```
